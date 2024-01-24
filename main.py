@@ -9,7 +9,7 @@ def main():
     parser = argparse.ArgumentParser(description='Parse a project structure into a JSON representation.')
     parser.add_argument('--project_path', type=str, required=True, help='Path to the root of the project.')
     parser.add_argument('--output_dir_path', type=str, required=True, help='Path to the output dir.')
-    parser.add_argument('--model_path', type=str, default='C:\\Users\\chech\\Documents\\TPNLP\\CodeBERT-master\\Juan\\model (7).bin', help='Path to unixcoder model')
+    parser.add_argument('--model_path', type=str, default='C:\\Users\\chech\\Documents\\TPNLP\\CodeBERT-master\\RA\\model (7).bin', help='Path to unixcoder model') # change to your model path
     parser.add_argument('--nl_query', type=str, default='need to know the loss function of seq2seq model')
     args = parser.parse_args()
 
