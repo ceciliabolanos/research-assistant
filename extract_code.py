@@ -68,10 +68,20 @@ def get_project_structure(project_path):
     res = {}
     file_path = None
 
+    project_name = os.path.basename(project_path.rstrip(os.sep)) # Get the project folder name
+
     for root, dirs, files in os.walk(project_path):
+        # Skip if it's before the project directory
+        if project_name not in root:
+            continue
+
         path_parts = root.split(os.sep)
+        # Start from the project directory in the path_parts
+        start_index = path_parts.index(project_name)
+        relevant_path_parts = path_parts[start_index:]
+
         current_level = res
-        for part in path_parts[1:]:
+        for part in relevant_path_parts:
             if part not in current_level:
                 current_level[part] = {}
             current_level = current_level[part]
@@ -91,7 +101,6 @@ def get_project_structure(project_path):
                 print(f"Failed to process file {file_path}: {e}")
 
     return res
-
 
 def summarize_structure(project_structure, indent=''):
     python_files = 0
