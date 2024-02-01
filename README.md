@@ -11,8 +11,8 @@ Esto devuelve las 3 respuestas más similares a la query. Pueden probar modifica
    - DFG.py: Se usa para pasar de código "string" a código secuencia.
    - code_search.py: Se usa para cargar el modelo y encontrar los embeddings más similares a la query.
    - extract_code.py: Convierte un repo de github a json.
-   - pdf_to_json.: Convierte un pdf a json.
-   - main.py
+   - pdf_to_json.py: Convierte un pdf a json.
+   - main.py: Agarra el pdf y github y los convierte a JSON. *Importante:* Falta chunkear el json del pdf y generar los embeddings de los chunks, además falta generar los embeddings del código (ya está truncado).
    - my-languages.so: Parseador de linux.
    - my-languages1.so: Parseador de windows.
    - tokens.py: Se usa para pasar de código "string" a código secuencia.
