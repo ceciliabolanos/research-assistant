@@ -29,10 +29,10 @@ Primero intenten correrlo sin venir a esta parte y, si tienen algún problema, r
    - !./gradlew clean install
 
    Windows:
-   $url = "https://github.com/kermitt2/grobid/archive/0.7.2.zip"
-   $outputPath = "C:\Users\chech\Documents\TPNLP\CodeBERT-master\research-assistant\grobid-0.7.2.zip"
-   Invoke-WebRequest -Uri $url -OutFile $outputPath
-   Expand-Archive -Path $outputPath -DestinationPath .\
+   - $url = "https://github.com/kermitt2/grobid/archive/0.7.2.zip"
+   - $outputPath = "C:\Users\chech\Documents\TPNLP\CodeBERT-master\research-assistant\grobid-0.7.2.zip"
+   - Invoke-WebRequest -Uri $url -OutFile $outputPath
+   - Expand-Archive -Path $outputPath -DestinationPath .\
    
 
   
