@@ -5,7 +5,7 @@ from extract_code import get_project_structure
 from code_search import CodeSearcher
 from utils import *
 from tokens import extract_code_snippets
-import fitz  # PyMuPDF
+from pdf_to_json import convert_pdf_to_json
 from pdfAnalyzer import *
 
 def main():
@@ -18,33 +18,27 @@ def main():
     parser.add_argument('--nl_query', type=str, required=False, default='need to know the loss function of seq2seq model')
     args = parser.parse_args()
 
-    #Path to clone the repo
-    temp_dir = "C:\\Users\\chech\\Documents\\TPNLP\\CodeBERT-master\\research-assistant\\prueba_output1" # Temporary directory to clone the repo
-    clone_github_repo(args.github_url, temp_dir)
+    #Path to save pdf and github 
+    temp_dir = "C:\\Users\\chech\\Documents\\TPNLP\\CodeBERT-master\\research-assistant\\prueba_output" # Temporary directory to clone the repo
     
     ########################################## Convert Github and PDF to JSON
     ########### Github
+    clone_github_repo(args.github_url, temp_dir) #
     project_structure = get_project_structure(temp_dir)
 
-    # Save the project structure to a JSON file
+       # Save the project structure to a JSON file
     os.makedirs(temp_dir, exist_ok=True)
     project_name = os.path.basename(args.github_url)
     output_path_code = os.path.join(temp_dir, f'{project_name}.json')
     with open(output_path_code, 'w', encoding='utf-8') as f:
         json.dump(project_structure, f, ensure_ascii=False, indent=4)
     
-    ########### PDF
-    doc = fitz.open(args.pdf_path)
-    pdf_structure = get_sections_content(args.pdf_path, get_toc(doc))
-
-    # Save the pdf structure to a JSON file
-    os.makedirs(temp_dir, exist_ok=True)
+    ########### PDF to JSON
     project_name = os.path.basename(args.pdf_path)
     output_path = os.path.join(temp_dir, f'{project_name}.json')
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(pdf_structure, f, ensure_ascii=False, indent=4)
+    convert_pdf_to_json(args.pdf_path, output_dir=output_path)
 
-    ################################# Read and analyze Github and PDF 
+    ################################# Read and analyze Github and PDF: Chunk y embedding.
     
     ######## Github 
     data = {}    
