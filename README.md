@@ -33,6 +33,8 @@ Primero intenten correrlo sin venir a esta parte y, si tienen algún problema, r
    - $outputPath = "C:\Users\chech\Documents\TPNLP\CodeBERT-master\research-assistant\grobid-0.7.2.zip"
    - Invoke-WebRequest -Uri $url -OutFile $outputPath
    - Expand-Archive -Path $outputPath -DestinationPath .\
+   - cd ".\grobid-0.7.2"
+   - .\gradlew clean install
    
 
   
