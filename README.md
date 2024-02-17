@@ -23,10 +23,10 @@ Primero intenten correrlo sin venir a esta parte y, si tienen algún problema, r
 
 ## Para que funcione pdf to json: 
    Linux:
-   - !wget https://github.com/kermitt2/grobid/archive/0.7.2.zip
-   - !unzip 0.7.2.zip
-   - %cd grobid-0.7.2/
-   - !./gradlew clean install
+   - wget https://github.com/kermitt2/grobid/archive/0.7.2.zip
+   - unzip 0.7.2.zip
+   - cd grobid-0.7.2/
+   - ./gradlew clean install
 
    Windows:
    - $url = "https://github.com/kermitt2/grobid/archive/0.7.2.zip"
