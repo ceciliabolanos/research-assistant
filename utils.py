@@ -152,17 +152,15 @@ def clone_github_repo(github_url, dest_folder):
             # Clone the repository into the temporary directory
             subprocess.run(["git", "clone", github_url, temp_dir], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
-            # Move the contents of the cloned repo to the destination folder
-            repo_name = os.path.basename(github_url.rstrip('/').split('/')[-1])
-            source_folder = os.path.join(temp_dir, repo_name)
-            for item in os.listdir(source_folder):
-                s = os.path.join(source_folder, item)
+            # Check if there are directories or files at the root of the temp_dir
+            for item in os.listdir(temp_dir):
+                s = os.path.join(temp_dir, item)
                 d = os.path.join(dest_folder, item)
                 if os.path.isdir(s):
-                    shutil.copytree(s, d, dirs_exist_ok=True)
+                    shutil.copytree(s, d, dirs_exist_ok=True)  # Copy directories
                 else:
-                    shutil.copy2(s, d)
-            
+                    shutil.copy2(s, d)  # Copy files
+
             print("Repository cloned successfully.")
 
     except subprocess.CalledProcessError as e:
@@ -170,5 +168,6 @@ def clone_github_repo(github_url, dest_folder):
         raise
     except Exception as e:
         print(f"Error: {e}")
-        raise   
+        raise
+
 

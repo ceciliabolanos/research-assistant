@@ -6,20 +6,19 @@ from code_search import CodeSearcher
 from utils import *
 from tokens import extract_code_snippets
 from pdf_to_json import convert_pdf_to_json
-from pdfAnalyzer import *
 
 def main():
     # Arguments: github url, pdf, model and nl query
     parser = argparse.ArgumentParser(description='Ask questions to the paper and its implementation.')
 
-    parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/dr-aheydari/SoftAdapt")    
-    parser.add_argument('--pdf_path', type=str, required=False, help='Path to the paper PDF', default="prueba_output\\2107.04734.pdf") #CAMBIAR EL REQUIRE
+    parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/microsoft/autogen/")    
+    parser.add_argument('--pdf_path', type=str, required=False, help='Path to the paper PDF', default="./autogen.pdf") #CAMBIAR EL REQUIRE
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
     parser.add_argument('--nl_query', type=str, required=False, default='need to know the loss function of seq2seq model')
     args = parser.parse_args()
 
     #Path to save pdf and github 
-    temp_dir = "C:\\Users\\chech\\Documents\\TPNLP\\CodeBERT-master\\research-assistant\\prueba_output" # Temporary directory to clone the repo
+    temp_dir = "./autogen_output" # Temporary directory to clone the repo
     
     ########################################## Convert Github and PDF to JSON
     ########### Github
@@ -52,7 +51,7 @@ def main():
     
 
     #Code and PDF chunkeados
-    new_output_path_code = '.\\prueba_output\\code_chunkeado.json' 
+    new_output_path_code = './autogen_output/code_chunkeado.json' 
     
     try:
         with open(new_output_path_code, 'w') as file:
