@@ -1,7 +1,20 @@
 # Cómo usar esto?
+
+pip install -r requirements.txt
+
+
+## Para que funcione pdf to json: 
+   Linux:
+   - wget https://github.com/kermitt2/grobid/archive/0.7.2.zip
+   - unzip 0.7.2.zip
+   - cd grobid-0.7.2/
+   - ./gradlew clean install
+
+
+
 Descargan la carpeta completa y ejecutan la siguiente linea en la terminal:
 
-python --github_url "https://github.com/dr-aheydari/SoftAdapt" --pdf_path "prueba_output\\2107.04734.pdf" --model_path 'unixcoder-ft.bin' --nl_query 'need to know the loss function of seq2seq model'
+python --github_url "https://github.com/microsoft/autogen/" --pdf_path "/autogen.pdf" --model_path 'unixcoder-ft.bin' --nl_query 'need to know the loss function of seq2seq model'
 
 Esto devuelve las 3 respuestas más similares a la query. Pueden probar modificando los argumentos.
 
@@ -18,23 +31,6 @@ Esto devuelve las 3 respuestas más similares a la query. Pueden probar modifica
    - tokens.py: Se usa para pasar de código "string" a código secuencia.
    - utils.py: Funciones varias
 
-# Pasos necesarios para ejecutar sin errores :)
-Primero intenten correrlo sin venir a esta parte y, si tienen algún problema, recurran acá.
 
-## Para que funcione pdf to json: 
-   Linux:
-   - wget https://github.com/kermitt2/grobid/archive/0.7.2.zip
-   - unzip 0.7.2.zip
-   - cd grobid-0.7.2/
-   - ./gradlew clean install
-
-   Windows:
-   - $url = "https://github.com/kermitt2/grobid/archive/0.7.2.zip"
-   - $outputPath = "C:\Users\chech\Documents\TPNLP\CodeBERT-master\research-assistant\grobid-0.7.2.zip"
-   - Invoke-WebRequest -Uri $url -OutFile $outputPath
-   - Expand-Archive -Path $outputPath -DestinationPath .\
-   - cd ".\grobid-0.7.2"
-   - .\gradlew clean install
-   
 
   

@@ -77,5 +77,4 @@ def extract_code_snippets(json_data, searcher, max_length=256):
                     else:
                         process_dict(value)
 
-        process_dict(json_data)
-        return code_snippets    
+        process_dict(json_data) 

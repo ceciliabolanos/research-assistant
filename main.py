@@ -14,20 +14,24 @@ def main():
     parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/microsoft/autogen/")    
     parser.add_argument('--pdf_path', type=str, required=False, help='Path to the paper PDF', default="./autogen.pdf") #CAMBIAR EL REQUIRE
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
-    parser.add_argument('--nl_query', type=str, required=False, default='need to know the loss function of seq2seq model')
+    parser.add_argument('--nl_query', type=str, required=False, default='need to know the loss function of the model')
     args = parser.parse_args()
 
     #Path to save pdf and github 
     temp_dir = "./autogen_output" # Temporary directory to clone the repo
+
+
     
     ########################################## Convert Github and PDF to JSON
     ########### Github
-    clone_github_repo(args.github_url, temp_dir) #
+    clone_github_repo(args.github_url, temp_dir) 
     project_structure = get_project_structure(temp_dir)
 
        # Save the project structure to a JSON file
     os.makedirs(temp_dir, exist_ok=True)
-    project_name = os.path.basename(args.github_url)
+    parts = [part for part in args.github_url.split('/') if part]
+    project_name = os.path.basename(parts[-1])
+
     output_path_code = os.path.join(temp_dir, f'{project_name}.json')
     with open(output_path_code, 'w', encoding='utf-8') as f:
         json.dump(project_structure, f, ensure_ascii=False, indent=4)
@@ -37,8 +41,12 @@ def main():
     output_path = os.path.join(temp_dir, f'{project_name}.json')
     convert_pdf_to_json(args.pdf_path, output_dir=output_path)
 
+
+
+
     ################################# Read and analyze Github and PDF: Chunk y embedding.
-    
+    searcher = CodeSearcher(args.model_path, code_snippets=[])
+
     ######## Github 
     data = {}    
     try:
@@ -47,8 +55,7 @@ def main():
     except Exception as e:
         print(f"Error al leer el archivo JSON: {e}")
     
-    code_snippets = extract_code_snippets(data)
-    
+    extract_code_snippets(data,searcher=searcher)
 
     #Code and PDF chunkeados
     new_output_path_code = './autogen_output/code_chunkeado.json' 
@@ -61,7 +68,7 @@ def main():
    
 
     ######### Search process
-    searcher = CodeSearcher(args.model_path, code_snippets)
+    
     k=3 #agregar para que sea por consola?
     t = searcher.get_similarity_search(args.nl_query, k)
 

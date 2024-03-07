@@ -28,8 +28,7 @@ class CodeSearcher:
         self.code_snippets = code_snippets
         self.code_embeddings_cache = {}  # Cache for code embeddings
         self.query_embeddings_cache = {}  # Cache for query embeddings
-        if code_snippets:
-            self.code_embeddings = self.generate_code_embeddings(code_snippets)
+        self.code_embeddings = []
 
     def load_model(self, model_path: str) -> Model:
         model = RobertaModel.from_pretrained('microsoft/unixcoder-base')
@@ -39,17 +38,20 @@ class CodeSearcher:
         model.eval()
         return model
     
-    def generate_code_embeddings(self, code_snippets: List[str]) -> np.ndarray:
+    def generate_code_embeddings(self, code_snippet: List[str]) -> np.ndarray:
         embeddings = []
-        for snippet in code_snippets:
+        for snippet in code_snippet:
             snippet_key = str(snippet)  # Convert the list to a string to use as a cache key
             if snippet_key in self.code_embeddings_cache:  # Check cache first
+                self.code_embeddings.append(self.code_embeddings_cache[snippet_key])
                 embeddings.append(self.code_embeddings_cache[snippet_key])
                 continue
             inputs = self.tokenizer.encode_plus(snippet, add_special_tokens=True, max_length=256, truncation=True, padding='max_length', return_tensors='pt')
             with torch.no_grad():
                 embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).cpu().numpy()
                 self.code_embeddings_cache[snippet_key] = embedding  # Save to cache using the string key
+            self.code_snippets.append(snippet)
+            self.code_embeddings.append(embedding)
             embeddings.append(embedding)
         return np.vstack(embeddings)
 
@@ -66,7 +68,7 @@ class CodeSearcher:
 
     def get_similarity_search(self, query: str, k: int) -> Dict[str, Dict[str, Union[int, str, float]]]:
         query_embedding = self.get_query_embedding(query)
-        similarities = 1 - cdist(query_embedding, self.code_embeddings, 'cosine').flatten()
+        similarities = 1 - cdist(query_embedding, np.vstack(self.code_embeddings), 'cosine').flatten()
 
         # Get top-k indices
         top_k_indices = np.argsort(similarities)[-k:]
