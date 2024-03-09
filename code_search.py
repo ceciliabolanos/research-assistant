@@ -25,10 +25,13 @@ class CodeSearcher:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if device is None else device
         self.tokenizer = RobertaTokenizer.from_pretrained('microsoft/unixcoder-base')
         self.model = self.load_model(model_path)
-        self.code_snippets = code_snippets
+        #self.code_snippets = code_snippets
         self.code_embeddings_cache = {}  # Cache for code embeddings
         self.query_embeddings_cache = {}  # Cache for query embeddings
         self.code_embeddings = []
+        self.embeddings_paths = []
+        self.functions_names = []
+        self.code = []
 
     def load_model(self, model_path: str) -> Model:
         model = RobertaModel.from_pretrained('microsoft/unixcoder-base')
@@ -38,7 +41,11 @@ class CodeSearcher:
         model.eval()
         return model
     
-    def generate_code_embeddings(self, code_snippet: List[str]) -> np.ndarray:
+    def save_path_and_function(self, path: str, function_name: str):
+        self.functions_names.append(function_name)
+        self.embeddings_paths.append(path)
+ 
+    def generate_code_embeddings(self, code_snippet: List[str], code, path, function_name) -> np.ndarray:
         embeddings = []
         for snippet in code_snippet:
             snippet_key = str(snippet)  # Convert the list to a string to use as a cache key
@@ -50,8 +57,11 @@ class CodeSearcher:
             with torch.no_grad():
                 embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).cpu().numpy()
                 self.code_embeddings_cache[snippet_key] = embedding  # Save to cache using the string key
-            self.code_snippets.append(snippet)
-            self.code_embeddings.append(embedding)
+            #self.code_snippets.append(snippet)
+            self.code.append(code) # save function code
+            self.code_embeddings.append(embedding) # save function embedding
+            self.functions_names.append(function_name) # save function name
+            self.embeddings_paths.append(path) # save function path
             embeddings.append(embedding)
         return np.vstack(embeddings)
 
@@ -78,7 +88,6 @@ class CodeSearcher:
         for index in reversed(top_k_indices):
             snippet_info = {
                 'index': index,
-                'snippet': self.code_snippets[index],
                 'similarity': similarities[index]
             }
             results[f'top_{k}'] = snippet_info
@@ -86,3 +95,7 @@ class CodeSearcher:
     
         return results
 
+    # dado un index devuelva el path completo y la funcion
+    def  get_index_info(self, index):
+        return self.embeddings_paths[index], self.functions_names[index], self.code[index]
+    

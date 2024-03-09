@@ -4,8 +4,10 @@ import json
 from collections import defaultdict
 import importlib.util
 import os
+import ast
+from collections import defaultdict
 
-def code_to_json(code_lines, tree):
+def code_to_json(code_lines, tree, file_path):
     res = {}
     functions = {}
     classes = {}
@@ -17,15 +19,24 @@ def code_to_json(code_lines, tree):
 
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef):
+            # Prefix the file path to the function name to include full path context
             function_code = "\n".join(code_lines[node.lineno - 1: node.end_lineno])
             function_lines = {"start": node.lineno - 1, "end": node.end_lineno}
             function_docstring = ast.get_docstring(node)
-            functions[node.name] = {"code": function_code, "lines": function_lines, "docstring": function_docstring}
+            # Here, file_path is used to prefix the function's name, providing full path
+            functions[node.name] = {
+                "code": function_code, 
+                "lines": function_lines, 
+                "docstring": function_docstring, 
+                "path": f"{file_path}#{node.name}",
+                "name": node.name
+            }
         elif isinstance(node, ast.ClassDef):
             class_code = "\n".join(code_lines[node.lineno - 1: node.end_lineno])
             class_lines = {"start": node.lineno - 1, "end": node.end_lineno}
             class_docstring = ast.get_docstring(node)
-            classes[node.name] = {"code": class_code, "lines": class_lines, "docstring": class_docstring}
+            classes[node.name] = {"code": class_code, "lines": class_lines, "docstring": class_docstring, 
+                                  "path": f"{file_path}#{node.name}","name": node.name}
         elif isinstance(node, ast.Import):
             for alias in node.names:
                 direct_imports[alias.name] = {"alias": alias.asname, "lineno": node.lineno}
@@ -51,7 +62,8 @@ def get_file_code(file_path):
             code = f.read()
             code_lines = code.split('\n')
             tree = ast.parse(code)
-            res = code_to_json(code_lines, tree)
+            # Now passing the file_path parameter to include in the function's output
+            res = code_to_json(code_lines, tree, file_path)
         elif file_path.endswith('.ipynb'):
             notebook = json.load(f)
             res = {'cells': [cell['source'] for cell in notebook['cells'] if cell['cell_type'] == 'code']}
