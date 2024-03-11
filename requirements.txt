@@ -4,7 +4,3 @@ transformers
 scipy==1.12.0
 tree_sitter==0.20.0
 xmltodict==0.13.0
-accelerate
-bitsandbytes
-torchvision
-peft
