@@ -20,7 +20,7 @@ def main():
 
     #Path to save pdf and github 
     temp_dir = "./autogen" # Temporary directory to clone the repo
-
+   
 
     ########################################## Convert Github and PDF to JSON
     ########### Github
@@ -43,7 +43,8 @@ def main():
     #output_path = os.path.join(temp_dir, f'{project_name}.json')
     #convert_pdf_to_json(args.pdf_path, output_dir=output_path)
 
-
+    
+    new_output_path_code = os.path.join(project_name, 'code_chunkeado.json')
     ################################# Read and analyze Github and PDF: Chunk y embedding.
     searcher = CodeSearcher(args.model_path, code_snippets=[])
 
@@ -58,7 +59,7 @@ def main():
     extract_code_snippets(data,searcher=searcher)
 
     #Code chunkeados
-    new_output_path_code = './autogen/code_chunkeado.json' 
+    
     
     try:
         with open(new_output_path_code, 'w') as file:
