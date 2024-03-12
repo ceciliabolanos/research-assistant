@@ -14,7 +14,7 @@ def main():
     parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/microsoft/autogen/")    
     parser.add_argument('--pdf_path', type=str, required=False, help='Path to the paper PDF', default="./autogen.pdf") 
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
-    parser.add_argument('--mistral?', type=str, default='yes', help='Decide if you want to use mistral model to preprocess nl_query')
+    parser.add_argument('--mistral', type=str, default='yes', help='Decide if you want to use mistral model to preprocess nl_query')
     parser.add_argument('--nl_query', type=str, required=False, default= 'By allowing custom agents that can converse with each other, conversable agents in AutoGen serve as a useful building block. However, to develop applications where agents make meaningful progresson tasks, developers also need to be able to specify and mold these multi-agent conversations. ### Conversation Specification: Conversations are specified by providing a set of rules for how the conversation should proceed. These rules are expressed using a simple language that allows specifying conditions on the current state of the conversation (e.g., which agent is currently speaking) and actions to take based on those conditions. The following example shows a rule that says if the current speaker is Agent A, then it should speak its next utterance, otherwise it should wait until the next turn:')
     args = parser.parse_args()
 
