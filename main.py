@@ -38,7 +38,7 @@ def main():
             json.dump(project_structure, f, ensure_ascii=False, indent=4)
     
     ########### PDF to JSON
-    """We are not using the pdf_to_json file"""
+    """We are not using the pdf_to_json script"""
     #project_name = os.path.basename(args.pdf_path)
     #output_path = os.path.join(temp_dir, f'{project_name}.json')
     #convert_pdf_to_json(args.pdf_path, output_dir=output_path)
