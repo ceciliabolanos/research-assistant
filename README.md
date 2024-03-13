@@ -1,6 +1,14 @@
-# Cómo usar esto?
+# How to use this repo:
 
 pip install -r requirements.txt
+
+github_url = 'path to github repo'
+unixcoder_path = 'path to unixcoder fine-tuned'
+using_mistral = 'wants to use mistral? yes or no'
+query = 'query to find the similarity in the github'
+
+Example: 
+python main.py --github_url "https://github.com/microsoft/autogen/" --model_path '/content/drive/My Drive/unixcoder-ft.bin' --mistral 'yes' --nl_query 'In AutoGen, a conversable agent is an entity with a specific role that can pass messages to send and receive information to and from other conversable agents, e.g., to start or continue a conversation.'
 
 
 ## Para que funcione pdf to json: 
