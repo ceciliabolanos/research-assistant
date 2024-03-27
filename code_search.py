@@ -21,12 +21,12 @@ class Model(nn.Module):
             return torch.nn.functional.normalize(outputs, p=2, dim=1)
         
 class CodeSearcher:
-    def __init__(self, model_path: str, code_snippets: List[str], device: Optional[torch.device] = None):
+    def __init__(self, model_path: str, code_snippets: List[str], device: Optional[torch.device] = None, cache_path: Optional[str] = None):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if device is None else device
         self.tokenizer = RobertaTokenizer.from_pretrained('microsoft/unixcoder-base')
         self.model = self.load_model(model_path)
         #self.code_snippets = code_snippets
-        self.code_embeddings_cache = {}  # Cache for code embeddings
+        self.code_embeddings_cache = self.load_cache(cache_path) if cache_path else {}  # Cache for code embeddings
         self.query_embeddings_cache = {}  # Cache for query embeddings
         self.code_embeddings = []
         self.embeddings_paths = []
@@ -40,11 +40,23 @@ class CodeSearcher:
         model.to(self.device)
         model.eval()
         return model
-    
+
+    def load_cache(self, cache_path: str):
+        """Load cache from a pickle file."""
+        try:
+            with open(cache_path, 'rb') as cache_file:
+                cache = pickle.load(cache_file)
+            print(f"Cache loaded successfully from {cache_path}.")
+            return cache
+        except Exception as e:
+            print(f"Failed to load cache from {cache_path}: {e}")
+            return {}
+
+
     def save_path_and_function(self, path: str, function_name: str):
         self.functions_names.append(function_name)
         self.embeddings_paths.append(path)
- 
+
     def generate_code_embeddings(self, code_snippet: List[str], code, path, function_name) -> np.ndarray:
         embeddings = []
         for snippet in code_snippet:
@@ -52,6 +64,9 @@ class CodeSearcher:
             if snippet_key in self.code_embeddings_cache:  # Check cache first
                 self.code_embeddings.append(self.code_embeddings_cache[snippet_key])
                 embeddings.append(self.code_embeddings_cache[snippet_key])
+                self.code.append(code) # save function code
+                self.functions_names.append(function_name) # save function name
+                self.embeddings_paths.append(path) # save function path
                 continue
             inputs = self.tokenizer.encode_plus(snippet, add_special_tokens=True, max_length=256, truncation=True, padding='max_length', return_tensors='pt')
             with torch.no_grad():
@@ -92,10 +107,42 @@ class CodeSearcher:
             }
             results[f'top_{k}'] = snippet_info
             k -= 1
-    
+
         return results
+
+    def search_by_keywords(self, query, k, filters):
+        # Filter code snippets based on presence of any keyword.
+        filtered_indices = [i for i, code_snippet in enumerate(self.code) if any(filter in code_snippet for filter in filters)]
+
+        # Avoid duplicating code: Get unique indices if needed.
+        filtered_indices = list(set(filtered_indices))
+
+        # Prepare embeddings for filtered code snippets.
+        filtered_embeddings = [self.code_embeddings[i] for i in filtered_indices]
+
+        # Get the query embedding.
+        query_embedding = self.get_query_embedding(query)
+        # Calculate cosine similarities.
+        similarities = 1 - cdist(query_embedding, np.vstack(filtered_embeddings), 'cosine').flatten()
+
+        # Get top-k indices of filtered list based on similarities.
+        top_k_indices = np.argsort(similarities)[-k:]
+
+        # Create a dictionary for the top k results, ensuring correct referencing.
+        results = {}
+        for rank, idx in enumerate(reversed(top_k_indices), start=1):
+            original_index = filtered_indices[idx]  # Map to original index in self.code.
+            snippet_info = {
+                'index': original_index,
+                'similarity': similarities[idx],
+                'snippet': self.code[original_index]  # Optional: Include the actual snippet for clarity.
+            }
+            results[f'top_{rank}'] = snippet_info
+
+        return results
+
 
     # dado un index devuelva el path completo y la funcion
     def  get_index_info(self, index):
         return self.embeddings_paths[index], self.functions_names[index], self.code[index]
-    
+
