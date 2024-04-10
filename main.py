@@ -2,25 +2,27 @@ import argparse
 import os
 import json
 from extract_code import get_project_structure
-from code_search import CodeSearcher
 from utils import *
 from tokens import extract_code_snippets
+#from calling_mistral import mistral_process_nl_query
+from langchain_faiss import CodeSearcher
+
 from pdf_to_json import convert_pdf_to_json #Not used for now
-from calling_mistral import mistral_process_nl_query
+
 
 def main():
     # Arguments: github url, pdf, model, mistral? and nl query
     parser = argparse.ArgumentParser(description='Ask questions to the paper and its implementation.')
-    parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/microsoft/autogen/")    
-    parser.add_argument('--pdf_path', type=str, required=False, help='Path to the paper PDF', default="./autogen.pdf") 
+    parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/ankitapasad/layerwise-analysis")    
+    parser.add_argument('--pdf_path', type=str, required=False, help='Path to the paper PDF', default="./lawer-analysis.pdf") 
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
-    parser.add_argument('--mistral', type=str, default='yes', help='Decide if you want to use mistral model to preprocess nl_query')
-    parser.add_argument('--nl_query', type=str, required=False, default= 'By allowing custom agents that can converse with each other, conversable agents in AutoGen serve as a useful building block. However, to develop applications where agents make meaningful progresson tasks, developers also need to be able to specify and mold these multi-agent conversations. ### Conversation Specification: Conversations are specified by providing a set of rules for how the conversation should proceed. These rules are expressed using a simple language that allows specifying conditions on the current state of the conversation (e.g., which agent is currently speaking) and actions to take based on those conditions. The following example shows a rule that says if the current speaker is Agent A, then it should speak its next utterance, otherwise it should wait until the next turn:')
+    parser.add_argument('--mistral', type=str, default='no', help='Decide if you want to use mistral model to preprocess nl_query')
+    parser.add_argument('--nl_query', type=str, required=False, default= 'Give me the function to get similarity between two layers')
     args = parser.parse_args()
 
     #Path to save pdf and github 
-    temp_dir = "./autogen" # Temporary directory to clone the repo
-   
+    temp_dir = "./layer-analysis" # Temporary directory to clone the repo
+  
 
     ########################################## Convert Github and PDF to JSON
     ########### Github
@@ -44,26 +46,27 @@ def main():
     #convert_pdf_to_json(args.pdf_path, output_dir=output_path)
 
     
-    new_output_path_code = os.path.join(project_name, 'code_chunkeado.json')
+    new_output_path_code = os.path.join(f'/{project_name}', 'code_chunkeado.json')
     ################################# Read and analyze Github and PDF: Chunk y embedding.
-    searcher = CodeSearcher(args.model_path, code_snippets=[])
+   
+    searcher = CodeSearcher(args.model_path, github_url= args.github_url, code_snippets=[])
 
+    
     ######## Github 
-    data = {}    
+    project_structure = {}    
     try:
        with open(output_path_code, 'r', encoding='utf-8') as file:
-        data = json.load(file)
+            project_structure = json.load(file)
     except Exception as e:
         print(f"Error al leer el archivo JSON: {e}")
-    
-    extract_code_snippets(data,searcher=searcher)
-
+      
+    extract_code_snippets(project_structure, searcher, save = True)
     #Code chunkeados
     
     
     try:
         with open(new_output_path_code, 'w') as file:
-            json.dump(data, file, indent=4)
+            json.dump(project_structure, file, indent=4)
     except Exception as e:
         print(f"Error al escribir el archivo JSON: {e}")
    
@@ -72,16 +75,20 @@ def main():
     
     k=2
     if args.mistral == 'yes':
-       t = searcher.get_similarity_search(mistral_process_nl_query(args.nl_query), k)
+       t = searcher.similarity_search(mistral_process_nl_query(args.nl_query), k)
     else:
-       t = searcher.get_similarity_search(args.nl_query, k) 
+       t = searcher.similarity_search(args.nl_query, k, use_nl_inputs=True) 
 
-    for key, value in t.items():
-        a, b, c = searcher.get_index_info(value['index'])
-        print(f'number:{key}')
-        print(f'path: {a}')
-        print(f'function name: {b}')
-        print(f'code: {c}\n\n')
+
+  
+    for result_dict in t:
+        for key in result_dict:
+            print(key)
+            top_result = result_dict[key]
+            print(f'index: {top_result["index"]}')
+            print(f'path: {top_result["path"]}')
+            print(f'function name: {top_result["function_name"]}\n')
+
 
 if __name__ == '__main__':
     main()
