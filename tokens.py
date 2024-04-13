@@ -60,7 +60,7 @@ def string_nl_to_sequence(source_nl):
     return   
 
 
-def extract_code_snippets(json_data, searcher, save = None, max_length=256):
+def extract_code_snippets(json_data, searcher, max_length=256):
         code_snippets = []
 
         def add_snippet(code):
@@ -81,5 +81,4 @@ def extract_code_snippets(json_data, searcher, save = None, max_length=256):
 
         process_dict(json_data)
 
-        if save:
-            searcher.save_faiss_index()
+  
