@@ -49,9 +49,7 @@ def main():
     new_output_path_code = os.path.join(f'/{project_name}', 'code_chunkeado.json')
     ################################# Read and analyze Github and PDF: Chunk y embedding.
    
-    searcher = CodeSearcher(args.model_path, github_url= args.github_url, code_snippets=[])
 
-    
     ######## Github 
     project_structure = {}    
     try:
@@ -59,17 +57,22 @@ def main():
             project_structure = json.load(file)
     except Exception as e:
         print(f"Error al leer el archivo JSON: {e}")
-      
-    extract_code_snippets(project_structure, searcher, save = True)
-    #Code chunkeados
+
+
+    if os.path.exists(os.path.join('./databases',temp_dir)):
+        path = os.path.join('./databases', temp_dir)
+        searcher = CodeSearcher(args.model_path, github_repo= temp_dir, faiss_path=path)
+    else:
+        searcher = CodeSearcher(args.model_path, github_repo= temp_dir)
+        extract_code_snippets(project_structure, searcher)
+        searcher.save_to_disk()
+        try:
+            with open(new_output_path_code, 'w') as file:
+                json.dump(project_structure, file, indent=4)
+        except Exception as e:
+            print(f"Error al escribir el archivo JSON: {e}")
     
-    
-    try:
-        with open(new_output_path_code, 'w') as file:
-            json.dump(project_structure, file, indent=4)
-    except Exception as e:
-        print(f"Error al escribir el archivo JSON: {e}")
-   
+  
 
     ######### Search process: Return the more k similar functions.
     
