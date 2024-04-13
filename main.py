@@ -5,8 +5,8 @@ from extract_code import get_project_structure
 from utils import *
 from tokens import extract_code_snippets
 #from calling_mistral import mistral_process_nl_query
-from langchain_faiss import CodeSearcher
-
+from code_searcher import CodeSearcher
+from conversation import Conversation
 from pdf_to_json import convert_pdf_to_json #Not used for now
 
 
@@ -72,10 +72,21 @@ def main():
         except Exception as e:
             print(f"Error al escribir el archivo JSON: {e}")
     
-  
-
+    with open('tools.json', 'r', encoding='utf-8') as file:
+        tools = json.load(file)
+ 
+    system_message = """You are paperGPT, a helpful assistant pulls academic papers to answer user questions.
+    You have access to paper's with code repo and functions that help you to to code search on the repo
+    If you are asked for search for a function you always return one and only one function that matches the query.
+    Also you need to return the path of that function.
+    If user ask for a function then don't ask for clarification and do your search
+    Begin!"""
     ######### Search process: Return the more k similar functions.
+    paper_conversation = Conversation(tools, searcher)
+    paper_conversation.add_message("system", system_message)
+    paper_conversation.chat()
     
+    '''
     k=2
     if args.mistral == 'yes':
        t = searcher.similarity_search(mistral_process_nl_query(args.nl_query), k)
@@ -93,6 +104,7 @@ def main():
             print(f'function name: {top_result["function_name"]}\n')
 
 
+'''
 if __name__ == '__main__':
     main()
 

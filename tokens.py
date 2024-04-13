@@ -7,7 +7,7 @@ from utils import (remove_comments_and_docstrings,
                    extract_dataflow)
 from tree_sitter import Language, Parser
 from transformers import RobertaTokenizer as tokenizer
-from code_search import CodeSearcher
+from code_searcher import CodeSearcher
 
 dfg_function={
     'python':DFG_python,
