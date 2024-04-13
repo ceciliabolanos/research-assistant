@@ -6,10 +6,10 @@ from typing import Optional, List, Dict, Union, Any
 import pickle
 from langchain_community.vectorstores import FAISS
 from code_search import Model
+import os
 
 class CodeSearcher:
-    def __init__(self, model_path: str, code_snippets: List[str], 
-                 github_url: str, 
+    def __init__(self, model_path: str, github_repo: str, 
                  device: Optional[torch.device] = None, faiss_path: Optional[str] = None):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if device is None else device
         self.tokenizer = RobertaTokenizer.from_pretrained('microsoft/unixcoder-base')
@@ -21,11 +21,14 @@ class CodeSearcher:
         self.functions_names = []
         self.code = []
         self.code_snippets = []
-        self.github_url = github_url
+        self.github_repo = github_repo
+        self.faiss_path = f'./databases/{github_repo}'
         if faiss_path:
             self.faiss_index = FAISS.load_local(faiss_path, self.model, allow_dangerous_deserialization = True)
             self.code = [doc.page_content for doc in self.faiss_index.docstore._dict.values()]
             self.code_embeddings = [self.faiss_index.index.reconstruct(int(i)) for i in range(self.faiss_index.index.ntotal)]
+            self.embeddings_paths = [doc.metadata['path'] for doc in self.faiss_index.docstore._dict.values()]
+            self.functions_names = [doc.metadata['function_name'] for doc in self.faiss_index.docstore._dict.values()]
         else:
             self.faiss_index = None
 
@@ -41,7 +44,7 @@ class CodeSearcher:
         self.functions_names.append(function_name)
         self.embeddings_paths.append(path)
 
-    def generate_code_embeddings(self, code_snippet: List[str], code, path, function_name, save: bool = False) -> np.ndarray:
+    def generate_code_embeddings(self, code_snippet: List[str], code, path, function_name) -> np.ndarray:
         embeddings = []
         for snippet in code_snippet:
             inputs = self.tokenizer.encode_plus(snippet, add_special_tokens=True, max_length=256, truncation=True, padding='max_length', return_tensors='pt')
@@ -53,19 +56,7 @@ class CodeSearcher:
             self.functions_names.append(function_name)
             self.embeddings_paths.append(path)
             embeddings.append(embedding)
-        
-        # Update the FAISS index
-        # if self.faiss_index is None:
-        #     self.faiss_index = FAISS.from_embeddings(list(zip(self.code[-len(code_snippet):], embeddings)), self.model)
-        # else:
-        #     self.faiss_index.add_embeddings(list(zip(self.code[-len(code_snippet):], embeddings)))
-        
-        # Save the updated FAISS index to disk if save=True
-        if save:
-            if self.faiss_path is not None:
-                self.save_to_disk(self.faiss_path) 
-            else:
-                self.faiss_path = self.github_url
+       
         return np.vstack(embeddings)
 
     def save_faiss_index(self):
@@ -86,7 +77,9 @@ class CodeSearcher:
         return embedding
 
     def build_faiss_index(self):
-        self.faiss_index = FAISS.from_embeddings(list(zip(self.code, self.code_embeddings)), self.model)
+        metadata = [{'path': path, 'function_name': function_name} 
+                for path, function_name in zip(self.embeddings_paths, self.functions_names)]
+        self.faiss_index = FAISS.from_embeddings(list(zip(self.code, self.code_embeddings)), self.model, metadatas=metadata)
 
     def similarity_search(self, query: str, k: int = 4, **kwargs: Any) -> List[Dict[str, Union[int, str, float]]]:
         if self.faiss_index is None:
@@ -135,7 +128,9 @@ class CodeSearcher:
         return self.embeddings_paths[index], self.functions_names[index], self.code[index]
 
     def save_to_disk(self):
-        self.faiss_index.save_local(folder_path = self.faiss_path, index_name = self.github_url)
+        if self.faiss_index is None:
+            self.build_faiss_index()
+        self.faiss_index.save_local(folder_path = self.faiss_path)
 
     @classmethod
     def load_from_disk(cls, folder_path: str, model_path: str, device: Optional[torch.device] = None):
