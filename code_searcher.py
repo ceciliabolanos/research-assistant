@@ -3,7 +3,6 @@ import torch
 from transformers import RobertaTokenizer, RobertaModel
 import numpy as np
 from typing import Optional, List, Dict, Union, Any
-import pickle
 from langchain_community.vectorstores import FAISS
 from model import Model
 import os
@@ -49,7 +48,7 @@ class CodeSearcher:
         for snippet in code_snippet:
             inputs = self.tokenizer.encode_plus(snippet, add_special_tokens=True, max_length=256, truncation=True, padding='max_length', return_tensors='pt')
             with torch.no_grad():
-                embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).cpu().numpy()
+                embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).detach().numpy()
             self.code.append(code)
             self.code_snippets.append(snippet)
             self.code_embeddings.append(embedding[0])
@@ -72,7 +71,7 @@ class CodeSearcher:
             return self.query_embeddings_cache[query_key]
         inputs = self.tokenizer.encode_plus(query, add_special_tokens=True, max_length=128, truncation=True, padding='max_length', return_tensors='pt')
         with torch.no_grad():
-            embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).cpu().numpy()
+            embedding = self.model(code_inputs=inputs['input_ids'].to(self.device))
             self.query_embeddings_cache[query_key] = embedding
         return embedding
 
@@ -85,7 +84,7 @@ class CodeSearcher:
         if self.faiss_index is None:
             self.build_faiss_index()
         inputs = self.tokenizer.encode_plus(query, add_special_tokens=True, max_length=128, truncation=True, padding='max_length', return_tensors='pt')
-        docs_and_scores = self.faiss_index.similarity_search_with_score(inputs['input_ids'], k=k)
+        docs_and_scores = self.faiss_index.similarity_search_with_score(inputs['input_ids'].detach().numpy() , k=k)
         results = []
         for i, (doc, score) in enumerate(docs_and_scores, start=1):
             index = self.code.index(doc.page_content)

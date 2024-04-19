@@ -53,7 +53,7 @@ def main():
 
     OPENAI_API_KEY = getpass.getpass("Enter your OpenAI API key:")
     
-    paper_conversation = Conversation(OPENAI_API_KEY, searcher=searcher, tools=tools)
+    paper_conversation = Conversation(OPENAI_API_KEY, searcher=searcher, tools=tools, mistral_option=args.mistral)
     paper_conversation.add_message("system", system_message)
     paper_conversation.chat()
     
