@@ -21,42 +21,29 @@ def main():
     temp_dir = project_name # Path to clone the repo
   
 
-    ########################################## Convert Github and PDF to JSON
-    ########### Github
-   
-    output_path_code = os.path.join(temp_dir, f'{project_name}.json')
-
-    if not os.path.exists(temp_dir):
-        clone_github_repo(args.github_url, temp_dir) 
-        project_structure = get_project_structure(temp_dir)
-
-        # Save the project structure to a JSON file
-        os.makedirs(temp_dir, exist_ok=True)
-        with open(output_path_code, 'w', encoding='utf-8') as f:
-            json.dump(project_structure, f, ensure_ascii=False, indent=4)
-   
-
-    ######## Github 
-    project_structure = {}    
-    try:
-       with open(output_path_code, 'r', encoding='utf-8') as file:
-            project_structure = json.load(file)
-    except Exception as e:
-        print(f"Error al leer el archivo JSON: {e}")
-
+    ####################### Convert Github to JSON
 
     if os.path.exists(os.path.join('./databases',temp_dir)):
         path = os.path.join('./databases', temp_dir)
         searcher = CodeSearcher(args.model_path, github_repo= temp_dir, faiss_path=path)
     else:
+        if not os.path.exists(temp_dir):
+            clone_github_repo(args.github_url, temp_dir) 
+            project_structure = get_project_structure(temp_dir)
+        output_path_code = os.path.join(temp_dir, f'{project_name}.json')
+        # Save the project structure to a JSON file
+        os.makedirs(temp_dir, exist_ok=True)
+        with open(output_path_code, 'w', encoding='utf-8') as f:
+            json.dump(project_structure, f, ensure_ascii=False, indent=4)
         searcher = CodeSearcher(args.model_path, github_repo= temp_dir)
         extract_code_snippets(project_structure, searcher)
-        searcher.save_to_disk()
-    
+        searcher.save_to_disk()    
+   
+    ######### Search process: Return the more k similar functions.
+
     with open('tools.json', 'r', encoding='utf-8') as file:
         tools = json.load(file)
  
-
     system_message = """You are paperGPT, a helpful assistant pulls academic papers to answer user questions.
     You have access to paper's with code repo and functions that help you to to code search on the repo
     If you are asked for search for a function you always return one and only one function that matches the query.
@@ -64,7 +51,6 @@ def main():
     If user ask for a function then don't ask for clarification and do your search
     Begin!"""
 
-    ######### Search process: Return the more k similar functions.
     OPENAI_API_KEY = getpass.getpass("Enter your OpenAI API key:")
     
     paper_conversation = Conversation(OPENAI_API_KEY, searcher=searcher, tools=tools)
