@@ -51,14 +51,6 @@ def string_code_to_sequence(source_code):
 #     code_ids+=[tokenizer.pad_token_id]*padding_length      
      return code_tokens
 
-def string_nl_to_sequence(source_nl):
-    nl_tokens=tokenizer.tokenize(nl)[:args.nl_length-2]
-    nl_tokens =[tokenizer.cls_token]+nl_tokens+[tokenizer.sep_token]
-    nl_ids =  tokenizer.convert_tokens_to_ids(nl_tokens)
-    padding_length = args.nl_length - len(nl_ids)
-    nl_ids+=[tokenizer.pad_token_id]*padding_length
-    return   
-
 
 def extract_code_snippets(json_data, searcher, max_length=256):
         code_snippets = []

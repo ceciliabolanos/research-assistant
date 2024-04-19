@@ -13,7 +13,7 @@
           },
           "k": {
             "type": "integer",
-            "default": 4,
+            "default": 5,
             "description": "The number of top results to return based on similarity scores."
           }
         },
