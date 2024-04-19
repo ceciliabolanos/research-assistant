@@ -3,7 +3,14 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import accelerate
 import bitsandbytes
 from peft import PeftModel
+import os
 
+# Set environment variables
+os.environ['HF_HOME'] = '/content/hf_cache'
+os.environ['TRANSFORMERS_CACHE'] = '/content/transformers_cache'
+os.environ['HF_DATASETS_CACHE'] = '/content/datasets_cache'
+os.environ['HF_METRICS_CACHE'] = '/content/metrics_cache'
+os.environ['HUGGINGFACE_TOKEN'] = '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'
 
 
 base_model_id = "mistralai/Mistral-7B-v0.1"
