@@ -4,6 +4,7 @@ import accelerate
 import bitsandbytes
 from peft import PeftModel
 from getpass import getpass
+import os 
 
 os.environ['HUGGINGFACE_TOKEN'] = getpass('Enter your Hugging Face API token: ')
 
