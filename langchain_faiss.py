@@ -49,7 +49,7 @@ class CodeSearcher:
         for snippet in code_snippet:
             inputs = self.tokenizer.encode_plus(snippet, add_special_tokens=True, max_length=256, truncation=True, padding='max_length', return_tensors='pt')
             with torch.no_grad():
-                embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).cpu().numpy()
+                embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).numpy()
             self.code.append(code)
             self.code_snippets.append(snippet)
             self.code_embeddings.append(embedding[0])
@@ -72,7 +72,7 @@ class CodeSearcher:
             return self.query_embeddings_cache[query_key]
         inputs = self.tokenizer.encode_plus(query, add_special_tokens=True, max_length=128, truncation=True, padding='max_length', return_tensors='pt')
         with torch.no_grad():
-            embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).cpu().numpy()
+            embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).numpy()
             self.query_embeddings_cache[query_key] = embedding
         return embedding
 
