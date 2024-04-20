@@ -84,7 +84,7 @@ class CodeSearcher:
         if self.faiss_index is None:
             self.build_faiss_index()
         inputs = self.tokenizer.encode_plus(query, add_special_tokens=True, max_length=128, truncation=True, padding='max_length', return_tensors='pt')
-        docs_and_scores = self.faiss_index.similarity_search_with_score(inputs['input_ids'].detach().numpy() , k=k)
+        docs_and_scores = self.faiss_index.similarity_search_with_score(inputs['input_ids'], k=k)
         results = []
         for i, (doc, score) in enumerate(docs_and_scores, start=1):
             index = self.code.index(doc.page_content)
