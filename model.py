@@ -24,8 +24,7 @@ class Model(nn.Module):
 
             outputs = self.encoder(code_inputs, attention_mask=code_inputs.ne(1))[0]
             outputs = (outputs * code_inputs.ne(1)[:, :, None]).sum(1) / code_inputs.ne(1).sum(-1)[:, None]
-            return torch.nn.functional.normalize(outputs, p=2, dim=1).detach().numpy()
-
+            return torch.nn.functional.normalize(outputs, p=2, dim=1).detach()
         else:
             if not isinstance(nl_inputs, torch.Tensor):
                 nl_inputs = torch.tensor(nl_inputs, device=self.device)
