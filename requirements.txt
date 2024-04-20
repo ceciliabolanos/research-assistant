@@ -7,3 +7,4 @@ xmltodict==0.13.0
 langchain-community
 faiss-cpu
 torchvision
+openai
