@@ -21,7 +21,7 @@ class Model(nn.Module):
             outputs = self.encoder(code_inputs, attention_mask=code_inputs.ne(1))[0]
             # Calculate weighted sum of output embeddings, ignoring padding tokens (id 1)
             outputs = (outputs * code_inputs.ne(1)[:, :, None]).sum(1) / code_inputs.ne(1).sum(-1)[:, None]
-            return torch.nn.functional.normalize(outputs, p=2, dim=1).detach().numpy().squeeze(0)
+            return torch.nn.functional.normalize(outputs, p=2, dim=1).detach().squeeze(0)
 
         elif nl_inputs is not None:
             nl_inputs = nl_inputs.to(self.device)
