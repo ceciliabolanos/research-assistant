@@ -27,12 +27,19 @@ Para finalizar con el pipeline, dada una query se busca calcular las funciones m
 
 # Cómo usarlo?
 
+
 !pip install -r requirements.txt
+
 !pip install -i https://pypi.org/simple/ bitsandbytes
+
 !pip install accelerate
+
 !pip install bitsandbytes
+
 !pip install -q -U git+https://github.com/huggingface/transformers.git@main
+
 !pip install -q -U git+https://github.com/huggingface/peft.git
+
 !pip install -q -U datasets scipy ipywidgets matplotlib
 
 
