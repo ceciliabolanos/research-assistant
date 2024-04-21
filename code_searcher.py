@@ -78,7 +78,11 @@ class CodeSearcher:
     def build_faiss_index(self):
         metadata = [{'path': path, 'function_name': function_name} 
                 for path, function_name in zip(self.embeddings_paths, self.functions_names)]
-        self.faiss_index = FAISS.from_embeddings(list(zip(self.code, self.code_embeddings)), self.model, metadatas=metadata)
+        if self.device.type == 'cuda':
+            gpu_resources = faiss.StandardGpuResources()
+            self.faiss_index = FAISS.from_embeddings(list(zip(self.code, self.code_embeddings)), self.model, metadatas=metadata,gpu_resources=gpu_resources)
+        else:
+            self.faiss_index = FAISS.from_embeddings(list(zip(self.code, self.code_embeddings)), self.model, metadatas=metadata)
 
     def similarity_search(self, query: str, k: int = 4, **kwargs: Any) -> List[Dict[str, Union[int, str, float]]]:
         if self.faiss_index is None:
@@ -134,7 +138,16 @@ class CodeSearcher:
     @classmethod
     def load_from_disk(cls, folder_path: str, model_path: str, device: Optional[torch.device] = None):
         code_searcher = cls(model_path, [], device)
-        code_searcher.faiss_index = FAISS.load_local(folder_path, code_searcher.model)
+         if device is None:
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        code_searcher.device = device
+
+         if device.type == 'cuda':
+            gpu_resources = faiss.StandardGpuResources()
+            code_searcher.faiss_index = FAISS.load_local(folder_path, code_searcher.model, gpu_resources=gpu_resources)
+        else:
+            code_searcher.faiss_index = FAISS.load_local(folder_path, code_searcher.model)
+
         code_searcher.code = [doc.page_content for doc in code_searcher.faiss_index.docstore._dict.values()]
         code_searcher.code_embeddings = [code_searcher.faiss_index.index.reconstruct(int(i)) for i in range(code_searcher.faiss_index.index.ntotal)]
         return code_searcher
