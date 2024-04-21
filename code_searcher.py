@@ -51,7 +51,7 @@ class CodeSearcher:
                 embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).detach().numpy()
             self.code.append(code)
             self.code_snippets.append(snippet)
-            self.code_embeddings.append(embedding[0])
+            self.code_embeddings.append(embedding)
             self.functions_names.append(function_name)
             self.embeddings_paths.append(path)
             embeddings.append(embedding)
