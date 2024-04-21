@@ -54,6 +54,7 @@ class Conversation:
         available_functions = {
             "similarity_search": self.searcher.similarity_search,  # Assuming searcher is correctly initialized
         }
+        
         if tool_calls:
             self.conversation_history.append(response_message)  
             for tool_call in tool_calls:
@@ -62,7 +63,6 @@ class Conversation:
                 function_args = json.loads(tool_call.function.arguments)
                 function_response = function_to_call(
                     query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
-                   # query = function_args.get("query"),
                     k=function_args.get("k"),
                 )
                 # Format the response into a string suitable for the conversation history
@@ -75,16 +75,18 @@ class Conversation:
                         "content": formatted_response,
                     }
                 )  
-                try:
-                    second_response = self.client.chat.completions.create(
-                    model= self.chat_model,
-                    messages=self.conversation_history,
-                    tools = self.tools
-                )   
-                    return second_response.choices[0].message.content
-                except Exception as e:
-                    self.console.print(f"Unable to generate ChatCompletion response: {str(e)}", style="bold red")
-                    return None
+                
+        try:
+            second_response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo-0125",
+                messages=self.conversation_history,
+                tools = self.tools
+            )   
+            self.conversation_history.append({"role": "assistant", "content": second_response.choices[0].message.content})
+            return second_response.choices[0].message.content
+        except Exception as e:
+            self.console.print(f"Unable to generate ChatCompletion response: {str(e)}", style="bold red")
+            return None
 
 
     def chat(self):
