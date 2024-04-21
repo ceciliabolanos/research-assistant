@@ -138,11 +138,11 @@ class CodeSearcher:
     @classmethod
     def load_from_disk(cls, folder_path: str, model_path: str, device: Optional[torch.device] = None):
         code_searcher = cls(model_path, [], device)
-         if device is None:
+        if device is None:
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         code_searcher.device = device
 
-         if device.type == 'cuda':
+        if device.type == 'cuda':
             gpu_resources = faiss.StandardGpuResources()
             code_searcher.faiss_index = FAISS.load_local(folder_path, code_searcher.model, gpu_resources=gpu_resources)
         else:
