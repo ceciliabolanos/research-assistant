@@ -14,7 +14,7 @@ def main():
     parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/ankitapasad/layerwise-analysis.git") 
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
     parser.add_argument('--mistral', type=str, default='no', help='Decide if you want to use mistral model to preprocess nl_query')
-    parser.add_argument('--chat_model', type=str, default='gpt-3.5-turbo')
+    parser.add_argument('--chat_model', type=str, default='gpt-3.5-turbo-0125')
     args = parser.parse_args()
     
     parts = [part for part in args.github_url.split('/') if part]
