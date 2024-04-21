@@ -24,10 +24,7 @@ def main():
 
     ####################### Convert Github to JSON
 
-    if os.path.exists(os.path.join('./databases',temp_dir)):
-        path = os.path.join('./databases', temp_dir)
-        searcher = CodeSearcher(args.model_path, github_repo= temp_dir, faiss_path=path)
-    else:
+    if not os.path.exists(os.path.join('./databases',temp_dir)):
         clone_github_repo(args.github_url, temp_dir) 
         project_structure = get_project_structure(temp_dir)
         output_path_code = os.path.join(temp_dir, f'{project_name}.json')
@@ -52,7 +49,8 @@ def main():
     Begin!"""
 
     OPENAI_API_KEY = getpass.getpass("Enter your OpenAI API key:")
-    
+    path = os.path.join('./databases', temp_dir)
+    searcher = CodeSearcher(args.model_path, github_repo= temp_dir, faiss_path=path)
     paper_conversation = Conversation(OPENAI_API_KEY, searcher=searcher, tools=tools, mistral_option=args.mistral, chat_model=args.chat_model)
     paper_conversation.add_message("system", system_message)
     paper_conversation.chat()
