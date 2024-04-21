@@ -4,7 +4,6 @@ import json
 from openai import OpenAI
 from calling_mistral import mistral_process_nl_query
 
-GPT_MODEL = "gpt-4-1106-preview"
 
 class Conversation:
     """
@@ -16,19 +15,20 @@ class Conversation:
         tool_dispatcher (ToolDispatcher): A dispatcher to handle tool-specific operations.
         console (Console): Console object for user interaction.
     """
-    def __init__(self, api_key, searcher, tools, mistral_option = 'no'):
+    def __init__(self, api_key, searcher, tools, mistral_option = 'no', chat_model='gpt-3.5-turbo-0125'):
         self.conversation_history = []
         self.client = OpenAI(api_key=api_key)
         self.searcher = searcher
         self.console = Console()
         self.tools = tools
         self.mistral = mistral_option
+        self.chat_model = chat_model
 
     def add_message(self, role, content):
         """Adds a message to the conversation history."""
         self.conversation_history.append({"role": role, "content": content})
 
-    def chat_completion_request(self, messages, model=GPT_MODEL):
+    def chat_completion_request(self, messages):
         """
         Requests a chat completion from the AI model.
 
@@ -40,7 +40,7 @@ class Conversation:
             Completion: The response from the AI model.
         """
         try:
-            response = self.client.chat.completions.create(model=model, messages=messages,tools=self.tools)
+            response = self.client.chat.completions.create(model=self.chat_model, messages=messages,tools=self.tools)
             return response
         except Exception as e:
             self.console.print(f"Unable to generate ChatCompletion response: {str(e)}", style="bold red")
@@ -77,7 +77,7 @@ class Conversation:
                 )  
                 try:
                     second_response = self.client.chat.completions.create(
-                    model="gpt-3.5-turbo-0125",
+                    model= self.chat_model,
                     messages=self.conversation_history,
                     tools = self.tools
                 )   
