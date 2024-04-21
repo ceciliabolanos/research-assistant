@@ -4,7 +4,7 @@ import json
 from openai import OpenAI
 from calling_mistral import mistral_process_nl_query
 
-GPT_MODEL = "gpt-3.5-turbo-0125"
+GPT_MODEL = "gpt-4-turbo-1106"
 
 class Conversation:
     """
