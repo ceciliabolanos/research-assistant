@@ -28,17 +28,16 @@ def main():
         path = os.path.join('./databases', temp_dir)
         searcher = CodeSearcher(args.model_path, github_repo= temp_dir, faiss_path=path)
     else:
-        if not os.path.exists(temp_dir):
-            clone_github_repo(args.github_url, temp_dir) 
-            project_structure = get_project_structure(temp_dir)
-            output_path_code = os.path.join(temp_dir, f'{project_name}.json')
-            # Save the project structure to a JSON file
-            os.makedirs(temp_dir, exist_ok=True)
-            with open(output_path_code, 'w', encoding='utf-8') as f:
-                json.dump(project_structure, f, ensure_ascii=False, indent=4)
-            searcher = CodeSearcher(args.model_path, github_repo= temp_dir)
-            extract_code_snippets(project_structure, searcher)
-            searcher.save_to_disk()    
+        clone_github_repo(args.github_url, temp_dir) 
+        project_structure = get_project_structure(temp_dir)
+        output_path_code = os.path.join(temp_dir, f'{project_name}.json')
+        # Save the project structure to a JSON file
+        os.makedirs(temp_dir, exist_ok=True)
+        with open(output_path_code, 'w', encoding='utf-8') as f:
+            json.dump(project_structure, f, ensure_ascii=False, indent=4)
+        searcher = CodeSearcher(args.model_path, github_repo= temp_dir)
+        extract_code_snippets(project_structure, searcher)
+        searcher.save_to_disk()    
        
     ######### Search process: Return the more k similar functions.
 
