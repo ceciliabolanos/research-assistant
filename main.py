@@ -14,6 +14,7 @@ def main():
     parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/ankitapasad/layerwise-analysis.git") 
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
     parser.add_argument('--mistral', type=str, default='no', help='Decide if you want to use mistral model to preprocess nl_query')
+    parser.add_argument('--chat_model', type=str, default='gpt-3.5-turbo')
     args = parser.parse_args()
     
     parts = [part for part in args.github_url.split('/') if part]
@@ -53,7 +54,7 @@ def main():
 
     OPENAI_API_KEY = getpass.getpass("Enter your OpenAI API key:")
     
-    paper_conversation = Conversation(OPENAI_API_KEY, searcher=searcher, tools=tools, mistral_option=args.mistral)
+    paper_conversation = Conversation(OPENAI_API_KEY, searcher=searcher, tools=tools, mistral_option=args.mistral, chat_model=args.chat_model)
     paper_conversation.add_message("system", system_message)
     paper_conversation.chat()
     
