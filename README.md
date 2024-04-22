@@ -51,7 +51,9 @@ mistral = 'wants to use mistral? yes or no'
 
 Ejemplo: 
 
-!python main.py --github_url "https://github.com/ankitapasad/layerwise-analysis.git" --model_path '/content/drive/My Drive/unixcoder-ft.bin' --mistral 'yes'
+     ```
+     python main.py --github_url "https://github.com/ankitapasad/layerwise-analysis.git" --model_path '/content/drive/My Drive/unixcoder-ft.bin' --mistral 'yes'
+     ```
 
 Genera una conversación con un asistente al cual se le puede ir preguntando sobre el github para que devuelta las funciones más similares a la query.
 
