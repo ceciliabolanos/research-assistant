@@ -52,7 +52,8 @@ class Conversation:
         response_message = response.choices[0].message
         tool_calls = response_message.tool_calls
         available_functions = {
-            "similarity_search": self.searcher.similarity_search,  # Assuming searcher is correctly initialized
+            "similarity_search": self.searcher.similarity_search,
+            "search_by_keywords": self.searcher.similarity_search,  # Assuming searcher is correctly initialized
         }
         
         if tool_calls:
@@ -61,11 +62,19 @@ class Conversation:
                 function_name = tool_call.function.name
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(tool_call.function.arguments)
-                function_response = function_to_call(
-                # query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
-                    query = function_args.get("query"),
-                    k=function_args.get("k"),
-                )
+                print(function_name)
+                if function_name == "search_by_keywords":
+                    function_response = function_to_call(
+                        query = function_args.get("query"),
+                        k = function_args.get("k"),
+                        filters = function_args.get("filters")  # Ensure filters are passed
+                    )
+                else:
+                    function_response = function_to_call(
+                        query = function_args.get("query"),
+                        k = function_args.get("k")
+                        # query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
+                    )   
                 # Format the response into a string suitable for the conversation history
                 formatted_response = json.dumps(function_response, indent=2)
                 self.conversation_history.append(

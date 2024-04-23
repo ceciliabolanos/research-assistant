@@ -101,27 +101,41 @@ class CodeSearcher:
             results.append(result)
         return results
 
+    import numpy as np
+
     def search_by_keywords(self, query, k, filters):
-        filtered_indices = [i for i, code_snippet in enumerate(self.code) if any(filter in code_snippet for filter in filters)]
-        filtered_indices = list(set(filtered_indices))
+        # Step 1: Pre-filter the snippets based on keywords
+        filtered_indices = [i for i, snippet in enumerate(self.code) if all(f in snippet for f in filters)]
+        
+        # Step 2: Calculate embeddings for the filtered snippets
         filtered_embeddings = [self.code_embeddings[i] for i in filtered_indices]
+        
+        # Step 3: Compute the query embedding
+        query_embedding = self.tokenizer.encode_plus(query, add_special_tokens=True, max_length=128, truncation=True, padding='max_length', return_tensors='pt')
 
-        query_embedding = self.get_query_embedding(query)
-        similarities = 1 - np.sum(np.square(filtered_embeddings - query_embedding), axis=1)
-
-        top_k_indices = np.argsort(similarities)[-k:]
-
-        results = {}
-        for rank, idx in enumerate(reversed(top_k_indices), start=1):
+        # Step 4: Compute similarities for the filtered embeddings
+        filtered_embeddings = np.array(filtered_embeddings)
+        dot_product = np.dot(filtered_embeddings, query_embedding)
+        norm_product = np.linalg.norm(filtered_embeddings, axis=1) * np.linalg.norm(query_embedding)
+        similarities = dot_product / norm_product
+        
+        # Step 5: Find the top-k similar snippets
+        top_k_indices = np.argsort(similarities)[-k:][::-1]
+        
+        results = []
+        for idx in top_k_indices:
             original_index = filtered_indices[idx]
-            snippet_info = {
+            results.append({
                 'index': original_index,
                 'similarity': similarities[idx],
-                'snippet': self.code[original_index]
-            }
-            results[f'top_{rank}'] = snippet_info
-
+                'snippet': self.code[original_index],
+                "function_name": self.functions_names[original_index],
+                'path': self.embeddings_paths[original_index]
+            })
+            
+        
         return results
+
 
     def get_index_info(self, index):
         return self.embeddings_paths[index], self.functions_names[index], self.code[index]

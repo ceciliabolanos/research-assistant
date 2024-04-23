@@ -50,5 +50,64 @@
         "description": "A list of dictionaries, each representing a code snippet and its associated data returned based on the similarity search."
       }
     }
-  }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "search_by_keywords",
+      "description": "Performs a filtered similarity search on code snippets based on a user-specified query and filters, returning the top-k most similar snippets.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The query to compare against the code snippets."
+          },
+          "k": {
+            "type": "integer",
+            "default": 5,
+            "description": "The number of top results to return based on similarity scores."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of keyword filters to apply to the code snippets before performing the similarity search."
+          }
+        },
+        "required": ["query","k", "filters"]
+      },
+      "returns": {
+        "type": "object",
+        "description": "A dictionary of top-k similar snippets, each with associated metadata.",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "index": {
+              "type": "integer",
+              "description": "The index of the code snippet in the source database."
+            },
+            "similarity": {
+              "type": "number",
+              "description": "The similarity score between the query and the snippet."
+            },
+            "snippet": {
+              "type": "string",
+              "description": "The code snippet itself."
+            },
+            "path": {
+              "type": "string",
+              "description": "The file path where the code snippet is located."
+            },
+            "function_name": {
+              "type": "string",
+              "description": "The name of the function in the code snippet."
+            }
+          },
+          "required": ["index", "similarity", "snippet", "path", "function_name"]
+        }
+      }
+    }
+  }  
 ]
