@@ -62,8 +62,8 @@ class Conversation:
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(tool_call.function.arguments)
                 function_response = function_to_call(
-                     query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
-                #    query = function_args.get("query"),
+                #     query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
+                    query = function_args.get("query"),
                     k=function_args.get("k"),
                 )
                 # Format the response into a string suitable for the conversation history
