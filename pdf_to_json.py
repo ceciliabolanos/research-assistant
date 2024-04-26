@@ -11,7 +11,7 @@ def convert_pdf_to_json(pdf_file_path, output_dir='./output'):
 
     # Assuming GROBID is installed and set up correctly in the environment
     # Execute GROBID to process the PDF file
-   
+
     subprocess.run([
         'java', '-Xmx4G', '-jar', 'grobid-0.7.2/grobid-core/build/libs/grobid-core-0.7.2-onejar.jar',
         '-gH', 'grobid-0.7.2/grobid-home', '-dIn', os.path.dirname(pdf_file_path), 
