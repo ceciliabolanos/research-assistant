@@ -2,10 +2,10 @@ import argparse
 import os
 import json
 from extract_code import get_project_structure
-from utils import *
+from parse_code.utils import *
 from tokens import extract_code_snippets
-from code_searcher import CodeSearcher
-from conversation import Conversation
+from retrieval.code_searcher import CodeSearcher
+from retrieval.conversation import Conversation
 import getpass
 
 def main():
