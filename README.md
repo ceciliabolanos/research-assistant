@@ -1,4 +1,4 @@
-# Trabajo práctico para la materia Procesamiento del Lenguaje natural:
+# CientificGPT:
 
 Para este trabajo buscamos generar un research-assistant que pueda ayudar a los investigadores (o curiosos sobre algún tema en particular) a encontrar la similitudes entre paper y repositorio. Para ello, generamos un modelo que, dado un repositorio de github y una query, devuelve las funciones más similares a la query pedida.
 
