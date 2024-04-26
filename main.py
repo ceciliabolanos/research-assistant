@@ -1,17 +1,17 @@
 import argparse
 import os
 import json
-from extract_code import get_project_structure
-from utils import *
-from tokens import extract_code_snippets
-from code_searcher import CodeSearcher
-from conversation import Conversation
+from parse_code.extract_code import get_project_structure
+from parse_code.utils import *
+from parse_code.tokens import extract_code_snippets
+from retrieval.code_searcher import CodeSearcher
+from retrieval.conversation import Conversation
 import getpass
 
 def main():
     # Arguments: github url, pdf, model, mistral?
     parser = argparse.ArgumentParser(description='Ask questions to the paper and its implementation.')
-    parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/ankitapasad/layerwise-analysis.git") 
+    parser.add_argument('--github_url', type=str, required=False, help='URL to the GitHub repository.', default="https://github.com/ceciliabolanos/easy-audio-embeddings.git") 
     parser.add_argument('--model_path', type=str, default='unixcoder-ft.bin', help='Path to unixcoder model')
     parser.add_argument('--mistral', type=str, default='no', help='Decide if you want to use mistral model to preprocess nl_query')
     parser.add_argument('--chat_model', type=str, default='gpt-3.5-turbo-0125')
@@ -40,7 +40,7 @@ def main():
 
     with open('tools.json', 'r', encoding='utf-8') as file:
         tools = json.load(file)
- 
+
     system_message = """You are a helpful assistant. Use the available tools to help the user understand the codebase."""
 
     OPENAI_API_KEY = getpass.getpass("Enter your OpenAI API key:")

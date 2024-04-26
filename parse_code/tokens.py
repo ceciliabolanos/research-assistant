@@ -1,13 +1,13 @@
 import ast
 from DFG import DFG_python,DFG_java,DFG_ruby,DFG_go,DFG_php,DFG_javascript
-from utils import (remove_comments_and_docstrings,
+from parse_code.utils import (remove_comments_and_docstrings,
                    tree_to_token_index,
                    index_to_code_token,
                    tree_to_variable_index,
                    extract_dataflow)
 from tree_sitter import Language, Parser
 from transformers import RobertaTokenizer as tokenizer
-from code_searcher import CodeSearcher
+from retrieval.code_searcher import CodeSearcher
 
 dfg_function={
     'python':DFG_python,
@@ -19,7 +19,7 @@ dfg_function={
 
 parsers={}        
 for lang in dfg_function:
-    LANGUAGE = Language('./my-languages.so', lang)   # Probablemente cambiarlo en linux a ./my-languages.so?
+    LANGUAGE = Language('./parse_code/my-languages.so', lang)   # Probablemente cambiarlo en linux a ./my-languages.so?
     parser = Parser()
     parser.set_language(LANGUAGE) 
     parser = [parser,dfg_function[lang]]    
