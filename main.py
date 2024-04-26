@@ -1,9 +1,9 @@
 import argparse
 import os
 import json
-from extract_code import get_project_structure
+from parse_code.extract_code import get_project_structure
 from parse_code.utils import *
-from tokens import extract_code_snippets
+from parse_code.tokens import extract_code_snippets
 from retrieval.code_searcher import CodeSearcher
 from retrieval.conversation import Conversation
 import getpass
@@ -40,15 +40,6 @@ def main():
 
     with open('tools.json', 'r', encoding='utf-8') as file:
         tools = json.load(file)
-
-    '''
-    system_message = """You are paperGPT, a helpful assistant pulls academic papers to answer user questions.
-    You have access to paper's with code repo and functions that help you to to code search on the repo
-    If you are asked for search for a function you always return one and only one function that matches the query.
-    Also you need to return the path of that function.
-    If user ask for a function then don't ask for clarification and do your search
-    Begin!"""
-    '''
 
     system_message = """You are a helpful assistant. Use the available tools to help the user understand the codebase."""
 
