@@ -53,7 +53,8 @@ class Conversation:
         tool_calls = response_message.tool_calls
         available_functions = {
             "similarity_search": self.searcher.similarity_search,
-            "search_by_keywords": self.searcher.similarity_search,  # Assuming searcher is correctly initialized
+            "search_by_keywords": self.searcher.similarity_search,
+            "display_tree": self.searcher.display_tree    # Assuming searcher is correctly initialized
         }
         
         if tool_calls:
@@ -62,13 +63,18 @@ class Conversation:
                 function_name = tool_call.function.name
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(tool_call.function.arguments)
-                print(function_name)
-                if function_name == "search_by_keywords":
-                    function_response = function_to_call(
-                        query = function_args.get("query"),
-                        k = function_args.get("k"),
-                        filters = function_args.get("filters")  # Ensure filters are passed
+                print(function_args)
+                if function_name == "display_tree":
+                     function_response = function_to_call(
+                        path = function_args.get("path"),
+                        max_depth = function_args.get("max_depth")
                     )
+                #if function_name == "search_by_keywords":
+                #    function_response = function_to_call(
+                #        query = function_args.get("query"),
+                #        k = function_args.get("k"),
+                #        filters = function_args.get("filters")  # Ensure filters are passed
+                #    )
                 else:
                     function_response = function_to_call(
                         query = function_args.get("query"),

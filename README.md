@@ -19,7 +19,6 @@ Para finalizar con el pipeline, dada una query se busca calcular las funciones m
    - code_search.py: Generamos los embeddings y los guardamos en una base de datos FAISS. 
    - extract_code.py: Convierte un repo de github a json.
    - main.py: Dado un github lo convierte a JSON para luego calcular los embeddings de cada una de las funciones del repositorio. Estos embeddings se guardan en una base de FAISS. 
-
    - tokens.py: Se usa para pasar de código "string" a código secuencia.
    - utils.py: Funciones varias
    - pdf_to_json.py: Convierte un pdf a json.
@@ -56,6 +55,15 @@ Ejemplo:
      ```
 
 Genera una conversación con un asistente al cual se le puede ir preguntando sobre el github para que devuelta las funciones más similares a la query.
+
+
+
+## Para que funcione pdf to json: 
+   Linux:
+   - wget https://github.com/kermitt2/grobid/archive/0.7.2.zip
+   - unzip 0.7.2.zip
+   - cd grobid-0.7.2/
+   - ./gradlew clean install
 
 
 

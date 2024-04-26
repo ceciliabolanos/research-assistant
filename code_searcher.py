@@ -6,6 +6,7 @@ from typing import Optional, List, Dict, Union, Any
 from langchain_community.vectorstores import FAISS
 from model import Model
 import os
+import subprocess
 
 class CodeSearcher:
     def __init__(self, model_path: str, github_repo: str, 
@@ -101,8 +102,16 @@ class CodeSearcher:
             results.append(result)
         return results
 
-    import numpy as np
-
+    def display_tree(self, path, max_depth): 
+        try:
+            # Run the 'tree' command with the specified path and maximum depth
+            output = subprocess.check_output(["tree", "-L", str(max_depth), self.github_repo], universal_newlines=True)
+            print(output)
+        except subprocess.CalledProcessError as e:
+            print(f"Error: {e}")
+        except FileNotFoundError:
+            print("Error: 'tree' command not found. Please make sure it is installed.")
+            
     def search_by_keywords(self, query, k, filters):
         # Step 1: Pre-filter the snippets based on keywords
         filtered_indices = [i for i, snippet in enumerate(self.code) if all(f in snippet for f in filters)]
@@ -136,7 +145,7 @@ class CodeSearcher:
         
         return results
 
-
+    
     def get_index_info(self, index):
         return self.embeddings_paths[index], self.functions_names[index], self.code[index]
 

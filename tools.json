@@ -3,7 +3,7 @@
     "type": "function",
     "function": {
       "name": "similarity_search",
-      "description": "Performs a similarity search on code snippets based on a query, returning the top-k most similar snippets.",
+      "description": "Performs a similarity search on code snippets based on a query, returning the top-k most similar snippets. Please, generally speaking we use k = 3, 5, 10",
       "parameters": {
         "type": "object",
         "properties": {
@@ -109,5 +109,32 @@
         }
       }
     }
-  }  
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "display_tree",
+      "description": "Displays the tree structure of a specified directory up to a certain depth.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The path to the directory for which you want to display the tree structure."
+          },
+          "max_depth": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The maximum depth of the directory tree to display."
+          }
+        },
+        "required": ["path", "max_depth"]
+      },
+      "returns": {
+        "type": "string",
+        "description": "The output of the 'tree' command, displaying the directory structure. If an error occurs, it contains the error message."
+      }
+    }
+  }
+  
 ]
