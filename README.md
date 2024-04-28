@@ -54,13 +54,5 @@ This command initiates a session with an assistant that can answer queries about
 We plan to add more capabilities to the searcher to handle more specific questions about code and to integrate paper content into the information available to the searcher.
 
 
-## Para que funcione pdf to json: 
-   Linux:
-   - wget https://github.com/kermitt2/grobid/archive/0.7.2.zip
-   - unzip 0.7.2.zip
-   - cd grobid-0.7.2/
-   - ./gradlew clean install
-
-
 
   
