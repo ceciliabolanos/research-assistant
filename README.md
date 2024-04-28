@@ -1,5 +1,6 @@
 # ScientificGPT
 
+
 ## Introduction
 
 In our academic journey, we often encounter research papers that reference specific code implementations. More than once, we've had to delve into these implementations to understand details not explicitly mentioned in the text. This experience inspired us to develop a scientific agent capable of bridging the gap between research papers and their associated code. This repository contains the initial MVP of such an agent, currently limited to code access.
