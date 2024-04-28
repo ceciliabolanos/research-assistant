@@ -53,7 +53,7 @@ class Conversation:
         tool_calls = response_message.tool_calls
         available_functions = {
             "similarity_search": self.searcher.similarity_search,
-            "search_by_keywords": self.searcher.similarity_search,
+         #   "search_by_keywords": self.searcher.similarity_search,
             "display_tree": self.searcher.display_tree    # Assuming searcher is correctly initialized
         }
         
