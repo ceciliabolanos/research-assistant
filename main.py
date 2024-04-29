@@ -37,7 +37,7 @@ def main():
        
     ######### Search process: Return the more k similar functions.
 
-    with open('tools.json', 'r', encoding='utf-8') as file:
+    with open('retrieval/tools.json', 'r', encoding='utf-8') as file:
         tools = json.load(file)
 
     system_message = """You are a helpful assistant. Use the available tools to help the user understand the codebase."""
