@@ -102,11 +102,11 @@ class CodeSearcher:
             results.append(result)
         return results
 
-    def display_tree(self, path, max_depth): 
+    def display_tree(self, max_depth): 
         try:
             # Run the 'tree' command with the specified path and maximum depth
             output = subprocess.check_output(["tree", "-L", str(max_depth), self.github_repo], universal_newlines=True)
-            print(output)
+            return output
         except subprocess.CalledProcessError as e:
             print(f"Error: {e}")
         except FileNotFoundError:

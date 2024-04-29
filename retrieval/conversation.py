@@ -66,7 +66,6 @@ class Conversation:
                 print(function_args)
                 if function_name == "display_tree":
                      function_response = function_to_call(
-                        path = function_args.get("path"),
                         max_depth = function_args.get("max_depth")
                     )
                 #if function_name == "search_by_keywords":
