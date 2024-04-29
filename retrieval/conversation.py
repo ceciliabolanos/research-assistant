@@ -2,7 +2,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 import json
 from openai import OpenAI
-from calling_mistral import mistral_process_nl_query
+from models.calling_mistral import mistral_process_nl_query
 
 
 class Conversation:
