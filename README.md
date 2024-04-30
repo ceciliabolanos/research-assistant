@@ -1,13 +1,28 @@
-# ScientificGPT
+Paul Thagard writes: "Thinking can best be understood in terms of representational structures in the mind and computational procedures that operate on those structures."
 
+# ScientificGPT
 
 ## Introduction
 
-In our academic journey, we often encounter research papers that reference specific code implementations. More than once, we've had to delve into these implementations to understand details not explicitly mentioned in the text. This experience inspired us to develop a scientific agent capable of bridging the gap between research papers and their associated code. This repository contains the initial MVP of such an agent, currently limited to code access.
+We stand at the foot of a significant inflection in the trajectory of scientific discovery. As society continues its digital transformation, so does humankind's collective scientific knowledge and discourse [1]. In our academic journey, we often encounter research papers that reference specific code implementations. More than once, we find ourselves having to inquire and scrutinize into these implementations to understand details not explicitly mentioned in the text. More than once, we find ourselves modifying and correcting code with errors or lack of updates. This experience inspires us to develop a scientific agent capable of bridging the gap between research papers and their associated code implementations. We believe that such kind of agent could help researchers of different kinds all over the world in several ways:
 
-## Overview
+1. Better link the world of academic article representations and the representations of writings in programming languages, which we know have a strong prior association, but have the problem of being written in two very different languages.
+2. Reduce the cognitive load on the researcher, thus accelerating their ability to produce new ideas and associations.
+3. Minimize search time in vast databases, which are normally very difficult to navigate, since it depends on multiple and very complex relationships between contents.
+4. Minimize the time and knowledge to use tools specific to scientific research in the digital world, such as MARG[2], or ACCoRD[3].
+5. Help the researcher quickly change the level of abstraction of the scientific representations on which they build knowledge.
 
-ScientificGPT is a Retrieval Augmented Generation (RAG) system that responds to natural language queries with the most relevant code snippets. It utilizes various components to perform tasks such as searching for code by similarity or giving directory trees from GitHub. The Searcher class uses a fine-tuned UnixCoder model, originally from Microsoft for CodeSearch, to align docstring embeddings with code embeddings. Given that a human query might not directly match the trained docstrings, we further fine-tuned the Mistral model on a custom dataset of query-docstring pairs to better translate queries into functional docstrings. Users have the option to use this enhanced Mistral model, which, if selected, pre-processes the query into a docstring before invoking the similarity search function.
+## Vision
+
+We envision ScientificGPT as a Retrieval Augmented Generation (RAG) system that responds to user queries with the most relevant paper or code snippets. It utilizes various *tools* to perform tasks such as searching for code using neural search, hybrid neural with keyword search, and moving within directory trees from GitHub, aiming to search in smaller directories. We envision an agent that can help the user bring together the outer world knowledge and the own researcher inner world view.
+This repository contains the initial MVP of such an agent, currently limited to code retrieval (see future work).
+
+## Where we are today
+
+The Conversation class orchestrates interactions using an Large Language Model [5], primarily handling conversation history, AI responses, and integration with external tools. The class allows users to engage in a chat that incorporates both simple message exchanges and more complex tool-driven queries.
+
+The Searcher class uses a fine-tuned UnixCoder model, originally from Microsoft for Code Search, to align docstring embeddings with code embeddings. Given that a human query might not directly match the trained docstrings, we further fine-tuned the Mistral model on a custom dataset of query-docstring pairs to better translate queries into functional docstrings. Users have the option to use this enhanced Mistral model, which, if selected, pre-processes the query into a docstring before invoking the similarity search function. Ultimately, our RAG system coordinates the actions of GPT-4 [5] as a knowledge linker and to assist the user, along with a medium language model (7B) [6] prepared to assist it in smaller and more specific tasks, and an encoder-only model that both the user and GPT-4 can invoke in a conversation session, which allows for retrieval tasks.
+
 
 ## Directory Structure
 
