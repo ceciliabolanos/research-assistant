@@ -74,7 +74,7 @@ python main.py --github_url "https://github.com/ankitapasad/layerwise-analysis.g
 
 ## Future Work
 
-We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [[7]("ref-grobid")], a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
+We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [[7](#ref-grobid)], a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
 
 ## References
 
