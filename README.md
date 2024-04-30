@@ -66,25 +66,25 @@ chat_model = "choice of GPT model for retrieval"
 
 Example command:
 
+This command initiates a session with an assistant that can answer queries about the GitHub repository, returning functions that closely match the query.
+
 ```bash
 python main.py --github_url "https://github.com/ankitapasad/layerwise-analysis.git" --model_path '/content/drive/My Drive/unixcoder-ft.bin' --mistral 'yes' --chat_model "gpt-3.5-turbo-0125"
 ```
 
-This command initiates a session with an assistant that can answer queries about the GitHub repository, returning functions that closely match the query.
-
 ## Future Work
 
-We plan to add more capabilities to the searcher to handle more specific questions about code and to integrate paper content into the information available to the searcher.
+We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [7], a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
 
 ## References
 
-1. Tom Hope, Doug Downey, Oren Etzioni, Daniel S. Weld, Eric Horvitz. "A Computational Inflection for Scientific Discovery". *Journal Not Specified*, vol. n/a, no. n/a, 2023, pp. pp. not available. [Available online](#)
-2. Mike D'Arcy, Tom Hope, Larry Birnbaum, Doug Downey. "MARG: Multi-Agent Review Generation for Scientific Papers". *Journal Not Specified*, vol. n/a, no. n/a, 2024, pp. pp. not available. [Available online](#)
-3. Sonia K. Murthy, Kyle Lo, Daniel King, Chandra Bhagavatula, Bailey Kuehl, Sophie Johnson, Jonathan Borchardt, Daniel S. Weld, Tom Hope, Doug Downey. "ACCoRD: A Multi-Document Approach to Generating Diverse Descriptions of Scientific Concepts". *Journal Not Specified*, vol. n/a, no. n/a, 2022, pp. pp. not available. [Available online](#)
-4. OpenAI. "GPT-4 Technical Report". *Journal Not Specified*, vol. n/a, no. n/a, 2024, pp. pp. not available. [Available online](#)
-5. Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". *Journal Not Specified*, vol. n/a, no. n/a, 2022, pp. pp. not available. [Available online](#)
-6. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". *Journal Not Specified*, vol. n/a, no. n/a, 2023, pp. pp. not available. [Available online](#)
-
+1. Tom Hope, Doug Downey, Oren Etzioni, Daniel S. Weld, Eric Horvitz. "A Computational Inflection for Scientific Discovery". [Available online](#https://arxiv.org/abs/2205.02007)
+2. Mike D'Arcy, Tom Hope, Larry Birnbaum, Doug Downey. "MARG: Multi-Agent Review Generation for Scientific Papers". [Available online](#https://arxiv.org/abs/2401.04259)
+3. Sonia K. Murthy, Kyle Lo, Daniel King, Chandra Bhagavatula, Bailey Kuehl, Sophie Johnson, Jonathan Borchardt, Daniel S. Weld, Tom Hope, Doug Downey. "ACCoRD: A Multi-Document Approach to Generating Diverse Descriptions of Scientific Concepts".[Available online](#https://arxiv.org/abs/2205.06982)
+4. OpenAI. "GPT-4 Technical Report". [Available online](#https://arxiv.org/abs/2303.08774)
+5. Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". [Available online](#https://arxiv.org/abs/2203.03850)
+6. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". [Available online](#https://arxiv.org/abs/2310.06825)
+7. Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](#https://github.com/kermitt2/grobid)
 
 
   
