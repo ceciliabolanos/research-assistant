@@ -13,7 +13,7 @@ Throughout our academic pursuits, we frequently encounter research papers that r
 1. Better link the world of academic article representations and the representations of writings in programming languages, which we know have a strong prior association, but have the problem of being written in two very different languages.
 2. Reduce the cognitive load on the researcher, thus accelerating their ability to produce new ideas and associations.
 3. Minimize search time in vast databases, which are normally very difficult to navigate, since it depends on multiple and very complex relationships between contents.
-4. Minimize the time and knowledge to use tools specific to scientific research in the digital world, such as [MARG[2](#ref-marg)], or [ACCoRD[3](#ref-accord)].
+4. Minimize the time and knowledge to use tools specific to scientific research in the digital world, such as MARG[[2](#ref-marg)], or ACCoRD[[3](#ref-accord)].
 5. Help the researcher quickly change the level of abstraction of the scientific representations on which they build knowledge.
 
 ## Vision
