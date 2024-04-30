@@ -79,15 +79,12 @@ We are planning to enhance the searcher's capabilities to better address specifi
 ## References
 
 1. <a id="ref-hope"> Tom Hope, Doug Downey, Oren Etzioni, Daniel S. Weld, Eric Horvitz. "A Computational Inflection for Scientific Discovery". [Available online](https://arxiv.org/abs/2205.02007)</a>
-2.<a id="ref-marg">Mike D'Arcy, Tom Hope, Larry Birnbaum, Doug Downey. "MARG: Multi-Agent Review Generation for Scientific Papers". [Available online](https://arxiv.org/abs/2401.04259)</a>
+2. <a id="ref-marg">Mike D'Arcy, Tom Hope, Larry Birnbaum, Doug Downey. "MARG: Multi-Agent Review Generation for Scientific Papers". [Available online](https://arxiv.org/abs/2401.04259)</a>
 3. <a id="ref-accord">Sonia K. Murthy, Kyle Lo, Daniel King, Chandra Bhagavatula, Bailey Kuehl, Sophie Johnson, Jonathan Borchardt, Daniel S. Weld, Tom Hope, Doug Downey. "ACCoRD: A Multi-Document Approach to Generating Diverse Descriptions of Scientific Concepts".[Available online](https://arxiv.org/abs/2205.06982)</a>
 4. <a id="ref-gpt">OpenAI. "GPT-4 Technical Report". [Available online](https://arxiv.org/abs/2303.08774)</a>
-
 5. <a id="ref-unixc">Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". [Available online](https://arxiv.org/abs/2203.03850)</a>
-
 6. <a id="ref-mb">Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". [Available online](https://arxiv.org/abs/2310.06825)</a>
-
-7.<a id="ref-grobid">Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)</a>
+7. <a id="ref-grobid">Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)</a>
 
 
   
