@@ -23,7 +23,7 @@ The Conversation class orchestrates interactions using an Large Language Model [
 
 The Searcher class uses a fine-tuned UnixCoder model, originally from Microsoft for Code Search, to align docstring embeddings with code embeddings. Given that a human query might not directly match the trained docstrings, we further fine-tuned the Mistral model on a custom dataset of query-docstring pairs to better translate queries into functional docstrings. Users have the option to use this enhanced Mistral model, which, if selected, pre-processes the query into a docstring before invoking the similarity search function. Ultimately, our RAG system coordinates the actions of GPT-4 [5] as a knowledge linker and to assist the user, along with a medium language model (7B) [6] prepared to assist it in smaller and more specific tasks, and an encoder-only model that both the user and GPT-4 can invoke in a conversation session, which allows for retrieval tasks.
 
-![Imagen de Google Colab](rag_system_revised (1).png "Visual structure of ")
+![Imagen de Google Colab](rag_system.png "Visual structure of ")
 
 
 
