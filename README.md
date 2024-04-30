@@ -74,7 +74,7 @@ python main.py --github_url "https://github.com/ankitapasad/layerwise-analysis.g
 
 ## Future Work
 
-We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [7], a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
+We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [[7]("ref-grobid")], a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
 
 ## References
 
@@ -84,7 +84,7 @@ We are planning to enhance the searcher's capabilities to better address specifi
 4. OpenAI. "GPT-4 Technical Report". [Available online](https://arxiv.org/abs/2303.08774)
 5. Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". [Available online](https://arxiv.org/abs/2203.03850)
 6. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". [Available online](https://arxiv.org/abs/2310.06825)
-7. Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)
+7.<a id="ref-grobid">Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)
 
 
   
