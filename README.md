@@ -78,13 +78,13 @@ We are planning to enhance the searcher's capabilities to better address specifi
 
 ## References
 
-1. Tom Hope, Doug Downey, Oren Etzioni, Daniel S. Weld, Eric Horvitz. "A Computational Inflection for Scientific Discovery". [Available online](#https://arxiv.org/abs/2205.02007)
-2. Mike D'Arcy, Tom Hope, Larry Birnbaum, Doug Downey. "MARG: Multi-Agent Review Generation for Scientific Papers". [Available online](#https://arxiv.org/abs/2401.04259)
-3. Sonia K. Murthy, Kyle Lo, Daniel King, Chandra Bhagavatula, Bailey Kuehl, Sophie Johnson, Jonathan Borchardt, Daniel S. Weld, Tom Hope, Doug Downey. "ACCoRD: A Multi-Document Approach to Generating Diverse Descriptions of Scientific Concepts".[Available online](#https://arxiv.org/abs/2205.06982)
-4. OpenAI. "GPT-4 Technical Report". [Available online](#https://arxiv.org/abs/2303.08774)
-5. Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". [Available online](#https://arxiv.org/abs/2203.03850)
-6. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". [Available online](#https://arxiv.org/abs/2310.06825)
-7. Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](#https://github.com/kermitt2/grobid)
+1. Tom Hope, Doug Downey, Oren Etzioni, Daniel S. Weld, Eric Horvitz. "A Computational Inflection for Scientific Discovery". [Available online](https://arxiv.org/abs/2205.02007)
+2. Mike D'Arcy, Tom Hope, Larry Birnbaum, Doug Downey. "MARG: Multi-Agent Review Generation for Scientific Papers". [Available online](https://arxiv.org/abs/2401.04259)
+3. Sonia K. Murthy, Kyle Lo, Daniel King, Chandra Bhagavatula, Bailey Kuehl, Sophie Johnson, Jonathan Borchardt, Daniel S. Weld, Tom Hope, Doug Downey. "ACCoRD: A Multi-Document Approach to Generating Diverse Descriptions of Scientific Concepts".[Available online](https://arxiv.org/abs/2205.06982)
+4. OpenAI. "GPT-4 Technical Report". [Available online](https://arxiv.org/abs/2303.08774)
+5. Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". [Available online](https://arxiv.org/abs/2203.03850)
+6. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". [Available online](https://arxiv.org/abs/2310.06825)
+7. Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)
 
 
   
