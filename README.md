@@ -84,7 +84,7 @@ We are planning to enhance the searcher's capabilities to better address specifi
 4. OpenAI. "GPT-4 Technical Report". [Available online](https://arxiv.org/abs/2303.08774)
 5. Daya Guo, Shuai Lu, Nan Duan, Yanlin Wang, Ming Zhou, Jian Yin. "UniXcoder: Unified Cross-Modal Pre-training for Code Representation". [Available online](https://arxiv.org/abs/2203.03850)
 6. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Mensch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guillaume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, William El Sayed. "Mistral 7B". [Available online](https://arxiv.org/abs/2310.06825)
-7.<a id="ref-grobid">Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)
+7.<a id="ref-grobid">Patrice Lopez. "GROBID: Combining Automatic Bibliographic Data Recognition and Term Extraction for Scholarship Publications".[Available online](https://github.com/kermitt2/grobid)</a>
 
 
   
