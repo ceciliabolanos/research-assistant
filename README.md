@@ -6,14 +6,14 @@
 
 ## Introduction
 
-*"We stand at the foot of a significant inflection in the trajectory of scientific discovery. As society continues its digital transformation, so does humankind's collective scientific knowledge and discourse (...) exponential growth in data processing power has fueled remarkable advances in artificial intelligence, including large neural language models capable of learning powerful representations from unstructured text (...) The confluence of societal and computational trends suggests that computer science is poised to ignite a revolution in the scientific process itself"* [1]. 
+*"We stand at the foot of a significant inflection in the trajectory of scientific discovery. As society continues its digital transformation, so does humankind's collective scientific knowledge and discourse (...) exponential growth in data processing power has fueled remarkable advances in artificial intelligence, including large neural language models capable of learning powerful representations from unstructured text (...) The confluence of societal and computational trends suggests that computer science is poised to ignite a revolution in the scientific process itself"* [1](#ref1). 
 
 Throughout our academic pursuits, we frequently encounter research papers that reference specific code implementations. Often, these encounters compel us to delve into the underlying code to unearth details omitted in the written text. Similarly, it becomes necessary to update or correct errors in the code to align with the ultimate scientific intent, whether of the original work or the researcher engaging with it. Motivated by these challenges, we envision the creation of a scientific agent designed to seamlessly connect research papers with their associated code implementations. Such an agent would significantly aid researchers worldwide in various disciplines. We believe that such kind of agent could help researchers of different kinds all over the world in several ways:
 
 1. Better link the world of academic article representations and the representations of writings in programming languages, which we know have a strong prior association, but have the problem of being written in two very different languages.
 2. Reduce the cognitive load on the researcher, thus accelerating their ability to produce new ideas and associations.
 3. Minimize search time in vast databases, which are normally very difficult to navigate, since it depends on multiple and very complex relationships between contents.
-4. Minimize the time and knowledge to use tools specific to scientific research in the digital world, such as MARG[2], or ACCoRD[3].
+4. Minimize the time and knowledge to use tools specific to scientific research in the digital world, such as MARG[2](#ref2), or ACCoRD[3](#ref3).
 5. Help the researcher quickly change the level of abstraction of the scientific representations on which they build knowledge.
 
 ## Vision
@@ -23,9 +23,9 @@ This repository contains the initial MVP of such an agent, currently limited to 
 
 ## Where we are today
 
-The Conversation class orchestrates interactions using an Large Language Model [4], primarily handling conversation history, AI responses, and integration with external tools. The class allows users to engage in a chat that incorporates both simple message exchanges and more complex tool-driven queries.
+The Conversation class orchestrates interactions using an Large Language Model [4](#ref4), primarily handling conversation history, AI responses, and integration with external tools. The class allows users to engage in a chat that incorporates both simple message exchanges and more complex tool-driven queries.
 
-The Searcher class uses a fine-tuned UnixCoder [5] model, originally from Microsoft for Code Search, to align docstring embeddings with code embeddings. Given that a human query might not directly match the trained docstrings, we further fine-tuned the Mistral model on a custom dataset of query-docstring pairs to better translate queries into functional docstrings. Users have the option to use this enhanced Mistral model, which, if selected, pre-processes the query into a docstring before invoking the similarity search function. Ultimately, our RAG system coordinates the actions of GPT-4 as a knowledge linker and to assist the user, along with a medium language model (7B) [6] prepared to assist it in smaller and more specific tasks, and an encoder-only model that both the user and GPT-4 can invoke in a conversation session, which allows for retrieval tasks.
+The Searcher class uses a fine-tuned UnixCoder [5](#ref5) model, originally from Microsoft for Code Search, to align docstring embeddings with code embeddings. Given that a human query might not directly match the trained docstrings, we further fine-tuned the Mistral model on a custom dataset of query-docstring pairs to better translate queries into functional docstrings. Users have the option to use this enhanced Mistral model, which, if selected, pre-processes the query into a docstring before invoking the similarity search function. Ultimately, our RAG system coordinates the actions of GPT-4 as a knowledge linker and to assist the user, along with a medium language model (7B) [6](#ref6) prepared to assist it in smaller and more specific tasks, and an encoder-only model that both the user and GPT-4 can invoke in a conversation session, which allows for retrieval tasks.
 
 ![Imagen de Google Colab](rag_system.png "Visual structure of ")
 
@@ -74,7 +74,7 @@ python main.py --github_url "https://github.com/ankitapasad/layerwise-analysis.g
 
 ## Future Work
 
-We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [7], a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
+We are planning to enhance the searcher's capabilities to better address specific questions about code and integrate academic papers into the available information. In our future work, we intend to add more tools, including the ability to summarize specific documents, generate knowledge graphs, and incorporate tools specifically designed for the scientific community, such as MARG and ACCoRD. Moreover, alongside representing the code from a paper, we plan to integrate the content of the paper itself using GROBID [7](#ref7), a machine learning library designed to extract, parse, and restructure raw documents like PDFs into structured XML/TEI-encoded documents, with a special emphasis on technical and scientific publications.
 
 ## References
 
