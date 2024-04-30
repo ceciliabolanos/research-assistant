@@ -1,4 +1,6 @@
-Paul Thagard writes: "Thinking can best be understood in terms of representational structures in the mind and computational procedures that operate on those structures."
+> "Thinking can best be understood in terms of representational structures in the mind and computational procedures that operate on those structures."
+>
+> — Paul Thagard
 
 # ScientificGPT
 
