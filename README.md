@@ -42,6 +42,7 @@ A usage example is provided in a Jupyter notebook available on this repository a
 Alternatively, follow these setup steps:
 
 ```bash
+apt-get install tree
 pip install -r requirements.txt
 pip install -i https://pypi.org/simple/ bitsandbytes
 pip install accelerate
