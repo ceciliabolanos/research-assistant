@@ -1,8 +1,8 @@
-
 import os
-import xmltodict
 import json
 import subprocess
+from parse_pdf.XMLParser import XMLParser
+
 
 def convert_pdf_to_json(pdf_file_path, output_dir='./output'):
     # Check if the output directory exists, create it if not
@@ -11,19 +11,15 @@ def convert_pdf_to_json(pdf_file_path, output_dir='./output'):
 
     # Assuming GROBID is installed and set up correctly in the environment
     # Execute GROBID to process the PDF file
+    subprocess.run([
+    'java', '-Djava.awt.headless=true', '-Xmx4G',  # Set Java to headless
+    '-jar', 'grobid-0.7.2/grobid-core/build/libs/grobid-core-0.7.2-onejar.jar',
+    '-gH', 'grobid-0.7.2/grobid-home',
+    '-dIn', os.path.dirname(pdf_file_path),  # Ensure this is the path to the PDFs
+    '-dOut', output_dir,
+    '-exe', 'processFullText'
+], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    subprocess.run([
-        'java', '-Xmx4G', '-jar', 'grobid-0.7.2/grobid-core/build/libs/grobid-core-0.7.2-onejar.jar',
-        '-gH', 'grobid-0.7.2/grobid-home', '-dIn', os.path.dirname(pdf_file_path), 
-        '-dOut', output_dir, '-exe', 'processFullText'
-    ], check=True)
-    """
-    subprocess.run([
-        'java', '-Xmx4G', '-jar', 'grobid-0.7.2/grobid-core/localLibs/wapiti-1.5.0.jar',
-        '-gH', 'grobid-0.7.2/grobid-home', '-dIn', os.path.dirname(pdf_file_path), 
-        '-dOut', output_dir, '-exe', 'processFullText'
-    ], check=True)
-     """
     # Construct the expected XML file path from the PDF file name
     xml_file_name = os.path.basename(pdf_file_path).replace('.pdf', '.tei.xml')
     xml_file_path = os.path.join(output_dir, xml_file_name)
@@ -35,22 +31,17 @@ def convert_pdf_to_json(pdf_file_path, output_dir='./output'):
     except Exception as e:
         return f"Error reading XML file: {e}"
 
-    # Convert the XML data to JSON
-    try:
-        parsed_xml = xmltodict.parse(xml_data)
-        json_data = json.dumps(parsed_xml, indent=4)
-    except Exception as e:
-        return f"Error converting XML to JSON: {e}"
+    parser = XMLParser(xml_data)
 
-    # Construct JSON file path
-    json_file_path = os.path.join(output_dir, xml_file_name.replace('.tei.xml', '.json'))
+    # Extract data
+    data = {
+        "Title": parser.get_title(),
+        "Abstract": parser.get_abstract(),
+        "Body Content": parser.get_body_content(),
+        "References": parser.get_references(),
+        "Figures": parser.get_figures()
+    }
 
-    # Write the JSON data to a file
-    try:
-        with open(json_file_path, "w", encoding="utf-8") as file:
-            file.write(json_data)
-        return f"JSON file saved successfully at {json_file_path}"
-    except Exception as e:
-        return f"Error saving JSON file: {e}"
-
-# The function can now be called from a main.py script with a PDF file path as input.
+    filename = os.path.join(output_dir, os.path.basename(pdf_file_path).replace('.pdf', '.json'))
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
