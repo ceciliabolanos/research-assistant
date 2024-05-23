@@ -9,11 +9,10 @@ import os
 import subprocess
 
 class Searcher:
-    def __init__(self, model_path: str, device: Optional[torch.device] = None):
+    def __init__(self, device: Optional[torch.device] = None):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if device is None else device
-        self.model = self.load_model(model_path)
         self.query_embeddings_cache = {}
-        self.faiss_index = None
+    
         self.embeddings = []
         self.items = []
         self.metadatas = []
@@ -33,7 +32,7 @@ class Searcher:
     def save_to_disk(self, folder_path: str):
         if self.faiss_index is None:
             self.build_faiss_index()
-        self.faiss_index.save_local(folder_path=folder_path)
+        self.faiss_index.save_local(folder_path=self.folder_path)
 
     @classmethod
     def load_from_disk(cls, folder_path: str, model_path: str, device: Optional[torch.device] = None):

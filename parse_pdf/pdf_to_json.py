@@ -39,7 +39,8 @@ def convert_pdf_to_json(pdf_file_path, output_dir='./output'):
         "Abstract": parser.get_abstract(),
         "Body Content": parser.get_body_content(),
         "References": parser.get_references(),
-        "Figures": parser.get_figures()
+        "Figures": parser.get_figures(),
+        "Figures_references": parser.get_figure_references()
     }
 
     filename = os.path.join(output_dir, os.path.basename(pdf_file_path).replace('.pdf', '.json'))

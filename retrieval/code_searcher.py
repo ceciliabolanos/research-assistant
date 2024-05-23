@@ -7,15 +7,15 @@ from langchain_community.vectorstores import FAISS
 from models.model import Model
 import os
 import subprocess
-from retrieval.searcher import Searcher
 
-class CodeSearcher(Searcher):
+class CodeSearcher():
     def __init__(self, model_path: str, github_repo: str, 
                  device: Optional[torch.device] = None, faiss_path: Optional[str] = None):
-        super().__init__(model_path, device)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if device is None else device
         self.tokenizer = RobertaTokenizer.from_pretrained('microsoft/unixcoder-base')
-        self.code_snippets = []
-        self.github_repo = github_repo
+        self.items = []
+        self.embeddings = []
+        self.metadatas = []
         self.faiss_path = f'./databases/{github_repo}'
         if faiss_path:
             self.faiss_index = FAISS.load_local(faiss_path, self.model, allow_dangerous_deserialization=True)
@@ -48,7 +48,6 @@ class CodeSearcher(Searcher):
             with torch.no_grad():
                 embedding = self.model(code_inputs=inputs['input_ids'].to(self.device)).detach().numpy()
             self.items.append(snippet)
-            self.code_snippets.append(snippet)
             self.embeddings.append(embedding)
             embeddings.append(embedding)
         if metadatas:
@@ -104,7 +103,15 @@ class CodeSearcher(Searcher):
                 'metadata': metadata
             })
         return results
+    
+    def save_to_disk(self):
+        if self.faiss_index is None:
+            self.build_faiss_index()
+        self.faiss_index.save_local(folder_path = self.faiss_path)
 
+    def build_faiss_index(self):
+        self.faiss_index = FAISS.from_embeddings(list(zip(self.items, self.embeddings)), self.model, metadatas=self.metadatas)
+        
     @classmethod
     def load_from_disk(cls, folder_path: str, model_path: str, device: Optional[torch.device] = None):
         code_searcher = cls(model_path, "", device)

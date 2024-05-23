@@ -19,7 +19,7 @@ dfg_function={
 
 parsers={}        
 for lang in dfg_function:
-    LANGUAGE = Language('./parse_code/my-languages.so', lang)   # Probablemente cambiarlo en linux a ./my-languages.so?
+    LANGUAGE = Language('./parse_code/my-languages.so', lang)   
     parser = Parser()
     parser.set_language(LANGUAGE) 
     parser = [parser,dfg_function[lang]]    

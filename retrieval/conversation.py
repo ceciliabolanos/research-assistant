@@ -2,7 +2,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 import json
 from openai import OpenAI
-from models.calling_mistral import mistral_process_nl_query
+#from models.calling_mistral import mistral_process_nl_query
 
 
 class Conversation:
@@ -76,7 +76,8 @@ class Conversation:
                 #    )
                 else:
                     function_response = function_to_call(
-                        query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
+                        query = function_args.get("query"),
+                        #query = mistral_process_nl_query(function_args.get("query")) if self.mistral == 'yes' else function_args.get("query"),
                         k = function_args.get("k")    
                     )   
                 # Format the response into a string suitable for the conversation history
