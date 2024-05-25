@@ -1,5 +1,11 @@
 import json
 
+
+def split_paragraphs(paragraph):
+    sentences = paragraph.split('.')
+    chunks = ['.'.join(sentences[i:i+3]) for i in range(0, len(sentences), 3)]
+    return chunks
+
 def get_paths(dictionary, current_path=""):
     paths = {}
 
@@ -22,7 +28,12 @@ def get_paths(dictionary, current_path=""):
             if isinstance(value, dict) and "title" in value:
                 new_path = f"{current_path}/{value['title']}" if current_path else value['title']
                 if "paragraphs" in value:
-                    paths.update(get_paths(value["paragraphs"], new_path))
+                    paragraphs = value["paragraphs"]
+                    for paragraph in paragraphs:
+                        chunks = split_paragraphs(paragraph)
+                        for idx, chunk in enumerate(chunks):
+                            chunk_path = f"{new_path}/paragraph_{idx+1}"
+                            paths[chunk_path] = chunk
             else:
                 new_path = current_path
                 paths.update(get_paths(value, new_path))
