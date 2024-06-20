@@ -3,7 +3,7 @@ import torch
 from transformers import RobertaTokenizer, RobertaModel
 import numpy as np
 from typing import Optional, List, Dict, Union, Any
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores.faiss import FAISS
 from models.model import Model
 import os
 import subprocess
@@ -13,6 +13,7 @@ class CodeSearcher():
                  device: Optional[torch.device] = None, faiss_path: Optional[str] = None):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") if device is None else device
         self.tokenizer = RobertaTokenizer.from_pretrained('microsoft/unixcoder-base')
+        self.model = self.load_model(model_path)
         self.items = []
         self.embeddings = []
         self.metadatas = []
@@ -25,20 +26,12 @@ class CodeSearcher():
         else:
             self.faiss_index = None
 
-    def load_model(self, model_path: Optional[str] = None) -> Model:
-        model_name = "microsoft/unixcoder-base"
-        
-        if model_path is None:
-            model = RobertaModel.from_pretrained(model_name)
-        else:
-            model = RobertaModel.from_pretrained(model_name)
-            state_dict = torch.load(model_path, map_location=self.device)
-            model.load_state_dict(state_dict)
-        
+    def load_model(self, model_path: str) -> Model:
+        model = RobertaModel.from_pretrained('microsoft/unixcoder-base')
         model = Model(model)
+        model.load_state_dict(torch.load(model_path, map_location=self.device))
         model.to(self.device)
         model.eval()
-        
         return model
 
     def generate_embeddings(self, code_snippets: List[str], metadatas: Optional[List[Dict[str, Any]]] = None) -> np.ndarray:
@@ -52,7 +45,7 @@ class CodeSearcher():
             embeddings.append(embedding)
         if metadatas:
             self.metadatas.extend(metadatas)
-        return 
+        return embeddings
 
     def similarity_search(self, query: str, k: int = 4, **kwargs: Any) -> List[Dict[str, Union[int, str, float]]]:
         if self.faiss_index is None:
@@ -110,7 +103,12 @@ class CodeSearcher():
         self.faiss_index.save_local(folder_path = self.faiss_path)
 
     def build_faiss_index(self):
-        self.faiss_index = FAISS.from_embeddings(list(zip(self.items, self.embeddings)), self.model, metadatas=self.metadatas)
+        # Ensure all items are strings
+        texts = [str(item) for item in self.items]
+        # Ensure all metadata are dictionaries
+        metadatas = [{**metadata} for metadata in self.metadatas]
+
+        self.faiss_index = FAISS.from_embeddings(list(zip(texts, self.embeddings)), self.model, metadatas=metadatas)
         
     @classmethod
     def load_from_disk(cls, folder_path: str, model_path: str, device: Optional[torch.device] = None):

@@ -66,7 +66,6 @@ def extract_code_snippets(json_data, searcher, max_length=256):
                         add_snippet(value['code'])
                         value['code_sequence'] = string_code_to_sequence(value['code'])
                         embeddings = searcher.generate_embeddings([value['code_sequence']], [{'path': value['path'], 'function_name': value['code_sequence'][1]}])
-                        value['code_embedding'] = [float(round(x, 16)) for x in embeddings.tolist()]
                     else:
                         process_dict(value)
 

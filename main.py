@@ -45,7 +45,9 @@ def main():
 
     if not os.path.exists(os.path.join('./databases',temp_dir.replace('.git', '.paper'))):
         project_structure = convert_pdf_to_json(args.pdf, temp_dir)
-        file_path = f'{temp_dir}/2107.04734.json'
+        # Extract the base name from the PDF URL without the .pdf extension
+        pdf_base_name = os.path.basename(args.pdf).replace('.pdf', '')
+        file_path = f'{temp_dir}/{pdf_base_name}.json'
         paper_searcher = PaperSearcher(paper_pdf= temp_dir.replace('.git', '.paper'))
         extract_paper_snippets(file_path, paper_searcher)
         paper_searcher.save_to_disk()   
