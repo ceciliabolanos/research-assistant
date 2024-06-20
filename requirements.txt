@@ -7,5 +7,6 @@ xmltodict==0.13.0
 langchain-community
 faiss-cpu
 faiss-gpu
-torchvision
 openai
+rich
+scipy

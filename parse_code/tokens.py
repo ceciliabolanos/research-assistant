@@ -19,7 +19,7 @@ dfg_function={
 
 parsers={}        
 for lang in dfg_function:
-    LANGUAGE = Language('./parse_code/my-languages.so', lang)   # Probablemente cambiarlo en linux a ./my-languages.so?
+    LANGUAGE = Language('./parse_code/my-languages.so', lang)   
     parser = Parser()
     parser.set_language(LANGUAGE) 
     parser = [parser,dfg_function[lang]]    
@@ -65,9 +65,7 @@ def extract_code_snippets(json_data, searcher, max_length=256):
                     if 'code' in value:
                         add_snippet(value['code'])
                         value['code_sequence'] = string_code_to_sequence(value['code'])
-                        embedding = searcher.generate_code_embeddings([value['code_sequence']], value['code'], value['path'],
-                                                                       value['code_sequence'][1])[0]
-                        value['code_embedding'] = [float(round(x, 16)) for x in embedding.tolist()]
+                        embeddings = searcher.generate_embeddings([value['code_sequence']], [{'path': value['path'], 'function_name': value['code_sequence'][1]}])
                     else:
                         process_dict(value)
 

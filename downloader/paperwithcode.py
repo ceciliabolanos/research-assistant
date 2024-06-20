@@ -27,7 +27,7 @@ class PapersRepositoryFetcher:
         official_paper_repos = list(self.get_official_paper_repos())
         
         # Store the PDF and repository URLs with .git suffix
-        with open("official_paper_repos.txt", "w") as f:
+        with open("downloader/official_paper_repos.txt", "w") as f:
             for pdf_url, repo_url in official_paper_repos:
                 # Ensure the repository URL ends with .git
                 modified_repo_url = self.transform_to_https_git_link(repo_url)

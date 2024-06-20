@@ -84,3 +84,27 @@ class XMLParser:
             if note_id:
                 footnotes[note_id] = note_text
         return footnotes
+    
+    def get_figure_references(self):
+        body = self.root.find('.//tei:text/tei:body', self.namespaces)
+        if body is None:
+            return []
+
+        figure_references = []
+
+        sections = body.findall('.//tei:div', self.namespaces)
+        for section in sections:
+            head = section.find('.//tei:head', self.namespaces)
+            section_title = head.text if head is not None else "No title"
+            section_number = head.get('n') if head is not None else "Unknown"
+            section_id = f"Section {section_number}: {section_title}"
+
+            for ref in section.findall('.//tei:ref[@type="figure"]', self.namespaces):
+                target = ref.get('target')
+                if target:
+                    figure_references.append({
+                        'figure_id': target.strip('#'),
+                        'section': section_id
+                    })
+
+        return figure_references
